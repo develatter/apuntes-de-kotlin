@@ -29,7 +29,7 @@ Kotlin permite declarar variables[^1] usando las siguientes palabras reservadas:
 
 _`val`_ permite declarar variables inmutables (constantes):
 
-```KOTLIN
+```Kotlin
 val nombre = "Pepe"
 
 val numero = 5
@@ -41,7 +41,7 @@ numero = 5 // Error, porque numero es inmutable.
 
 _`var`_ , en cambio, permite declarar variables mutables. Es decir, variables a las que se les pueden reasignar valores a lo largo del código.  
 
-```KOTLIN
+```Kotlin
 var nombre = "Pepe"
 
 var numero = 5
@@ -118,10 +118,12 @@ Esto supone que el tipo de dato de una variable determina el tipo de métodos y 
 
 A partir de estos tipos de datos podemos construir tipos de datos más complejos (como veremos más adelante).
 
->[!NOTE] ¿Cómo identificar el tipo de dato?
+> [!NOTE]
+> **¿Cómo identificar el tipo de dato?**
 Para ver el tipo de dato de una variable, se puede usar la propiedad abstracta [simpleName](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-class/simple-name.html) de la siguiente manera:
 >```Kotlin
-variable::class.simpleName
+>variable::class.simpleName
+
 
 ## String
 
@@ -233,7 +235,7 @@ println(saludo)
 ```
 
 
-  Un método muy útil para evitar problemas de formato con las cadenas multilínea es __`.trimIndent()`__, el cual nos permite eliminar todos los espacios en blanco al principio de cada línea del String. De esta forma podemos escribir el literal de forma más legible sin que eso afecte a lo que se muestra por pantalla.
+Un método muy útil para evitar problemas de formato con las cadenas multilínea es __`.trimIndent()`__, el cual nos permite eliminar todos los espacios en blanco al principio de cada línea del String. De esta forma podemos escribir el literal de forma más legible sin que eso afecte a lo que se muestra por pantalla.
   
   ```Kotlin
 val saludo = """
@@ -268,7 +270,8 @@ Algunos especificadores comunes incluyen:
 
 También puedes usar la sintaxis `argument_index$` para referenciar el mismo argumento varias veces en diferentes formatos dentro de la misma cadena.
 
->[!TIP] Para una lista completa de especificadores de formato, consulta la [documentación de la clase Formatter de Java](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Formatter.html).
+> [!TIP]
+> Para una lista completa de especificadores de formato, consulta la [documentación de la clase Formatter de Java](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Formatter.html).
 
 #### Ejemplos
 
@@ -302,7 +305,8 @@ La función `String.format()` ofrece una funcionalidad similar a las plantilla
 
 Además, puedes asignar la cadena de formato a una variable, lo cual es útil cuando el formato debe cambiar, como en casos de localización que dependen del idioma o región del usuario.
 
->[!CAUTION]   **Precaución**  
+> [!CAUTION]
+>**Precaución**  
 Al usar `String.format()`, ten cuidado de no equivocarte con la cantidad o posición de los argumentos y los placeholders.
 
 
@@ -327,7 +331,8 @@ val oneLong = 1L // Long
 val oneByte: Byte = 1  
 ```
 
->[!TIP] Además de los tipos enteros, Kotlin también proporciona tipos enteros sin signo. Para más información, consulta los [tipos enteros sin signo](https://kotlinlang.org/docs/unsigned-integers.html).  
+> [!TIP]
+> Además de los tipos enteros, Kotlin también proporciona tipos enteros sin signo. Para más información, consulta los [tipos enteros sin signo](https://kotlinlang.org/docs/unsigned-integers.html).  
 
 ---
 ### Tipos de números de decimales 
@@ -422,7 +427,9 @@ En Kotlin, puedes usar diferentes tipos de constantes literales para números in
   val binaryValue = 0b00001011
   ```  
 
->[!WARNING] **Octales**: No están soportados en Kotlin.  
+> [!WARNING]
+> **Octales**:
+> No están soportados en Kotlin.  
 
 ---
 #### Constantes literales para valores de punto flotante
@@ -474,7 +481,8 @@ val x = (1 shl 2) and 0x000FF000
 ## Lógicos
 Un objeto booleano puede representar dos valores _`true`_ y _`false`_. Recuerda que a diferencia de Java, _`Boolean`_ no puede ser nulo. Su contraparte *nullable* es _`Boolean`_.
 
->[!NOTE] *¡No ocupan un bit!*
+> [!NOTE]
+> *¡No ocupan un bit!*
 >En la JVM, los objetos `Boolean` que se guardan como el primitivo `boolean` típicamente ocupan 1 byte.
 
 ### Las operaciones booleanas son
@@ -494,7 +502,8 @@ Un objeto booleano puede representar dos valores _`true`_ y _`false`_. Recuerda 
 
 Los caracteres en Kotlin son representados con el tipo _`Char`_ y sus literales pueden ir entre comillas simples _`'C'`_.  Aunque normalmente los literales de caracteres suelen ser de un único carácter, también podemos encontrar secuencias escapadas de Unicode entre comillas simples cumpliendo con la misma función.
 
->[!INFO] En la JVM los objetos de tipo `Char` se guardan como el primitivo `char`, representando un carácter Unicode de 16 bits.
+> [!INFO]
+> En la JVM los objetos de tipo `Char` se guardan como el primitivo `char`, representando un carácter Unicode de 16 bits.
 
 Los caracteres especiales pueden ser escapados con una barra invertida _`\`_.
 
@@ -731,7 +740,8 @@ fun crearMatriz(filas: Int, columnas: Int, valorInicial: String) = Array(filas) 
 ~$ ***
  ```
   
->[!TIP] _¡Ojo!_ 
+> [!TIP]
+> _¡Ojo!_ 
 Con el bucle de arriba recorreremos los elementos de la matriz, pero… ¿Y si queremos acceder a los índices para modificar el valor de los elementos, igual que hacíamos en Java? Para ello podemos acceder a la propiedad indices, presente en las colecciones
 
 ```Kotlin
@@ -773,7 +783,8 @@ val matrizTresDimensiones = Array(3) {
 ```
 [Prueba este código ▶](https://pl.kotl.in/ZEyi7fIyW)
 
->[!INFO] _¿Sabías que...?_
+> [!INFO]
+> _¿Sabías que...?_
 >Para poder visualizar una matriz en consola, es recomendable usar el método `contentToString()`. Pero con más de 2 dimensiones sólo mostrarán las direcciones de memoria en cada caso. Para estos últimos, el método `contentDeepToString()` que permite ver la matriz en su totalidad:
 >```Kotlin
 >for (fila in matriz) {
@@ -843,7 +854,8 @@ println(
 [Prueba este código ▶](https://pl.kotl.in/O6mvA93Nz)
 
 
->[!WARNING] **Importante**
+> [!WARNING]
+> **Importante**:
 >En el caso de los arrays, los operadores de comparación `==` y `!=` comprueban si ambas variables hacen referencia al mismo array (a la misma posición de memoria). Es decir, el contenido de dos arrays no debe compararse con estos operadores.
 
 [^6]: ContentEquals - Kotlin Programming Language. (s. f.). Kotlin. [https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-equals.html](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-equals.html)
