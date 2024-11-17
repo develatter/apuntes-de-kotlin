@@ -18,6 +18,7 @@ Este documento ha sido diseñado y redactado por estudiantes del curso de 2º DA
 		</a>&nbsp;&nbsp;
 	</p>
 </div>
+<hr/>
 <div>
 	<p align="center" style="font-size: 1.5em;"> 
 		<strong>Juan González Cobo</strong>
@@ -28,6 +29,9 @@ Este documento ha sido diseñado y redactado por estudiantes del curso de 2º DA
 		  </a>&nbsp;&nbsp;
 	</p>
 </div>
+
+<hr/>
+
 <div>
 	<p align="center" style="font-size: 1.5em;"> 
 		<strong>Juan Diego Rondón Bedoya</strong>
