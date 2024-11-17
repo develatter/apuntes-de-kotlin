@@ -800,11 +800,10 @@ val matrizTresDimensiones = Array(3) {
 > **¿Sabías que...?**
 >Para poder visualizar una matriz en consola, es recomendable usar el método `contentToString()`. Pero con más de 2 dimensiones sólo mostrarán las direcciones de memoria en cada caso.
 Para estos últimos, el método `contentDeepToString()` que permite ver la matriz en su totalidad:
-```kotlin
-for (fila in matriz) {
-     println(fila.contentToString())
- }
-```
+>```kotlin
+>for (fila in matriz) {
+>	println(fila.contentToString())
+>}
 
 #### Comparar arrays
 
