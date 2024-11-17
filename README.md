@@ -35,15 +35,9 @@ Este documento ha sido diseñado y redactado por estudiantes del curso de 2º DA
 		<strong>Juan Diego Rondón Bedoya</strong>
 	</p>
 	<p align="center"> 
-		  <a href="#" style="text-decoration: none;">
+		  <a href="https://github.com/JuanDiego1912" style="text-decoration: none;">
 		    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />        
 		  </a>&nbsp;&nbsp;
-		<a href="#" style="text-decoration: none;">
-		    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />        
-		</a>&nbsp;&nbsp;
-		<a href="#" style="text-decoration: none;">
-		    <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" />        
-		</a>&nbsp;&nbsp;
 	</p>
 	<hr/>
 </div>
