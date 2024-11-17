@@ -512,7 +512,7 @@ Un objeto booleano puede representar dos valores _`true`_ y _`false`_. Recuerda 
 
 Los caracteres en Kotlin son representados con el tipo _`Char`_ y sus literales pueden ir entre comillas simples _`'C'`_.  Aunque normalmente los literales de caracteres suelen ser de un único carácter, también podemos encontrar secuencias escapadas de Unicode entre comillas simples cumpliendo con la misma función.
 
-> [!INFO]
+> [!NOTE]
 > En la JVM los objetos de tipo `Char` se guardan como el primitivo `char`, representando un carácter Unicode de 16 bits.
 
 Los caracteres especiales pueden ser escapados con una barra invertida _`\`_.
@@ -756,14 +756,12 @@ fun crearMatriz(filas: Int, columnas: Int, valorInicial: String) = Array(filas) 
 > [!TIP]
 > _¡Ojo!_ 
 Con el bucle de arriba recorreremos los elementos de la matriz, pero… ¿Y si queremos acceder a los índices para modificar el valor de los elementos, igual que hacíamos en Java? Para ello podemos acceder a la propiedad indices, presente en las colecciones
-
-```Kotlin
-for (i in matrizStrings.indices) {
-   for (j in matrizStrings[i].indices) {
-       println("matrizStrings[$i][$j] = ${matrizStrings[i][j]}")
-   }
-}
-```
+> ```Kotlin
+> for (i in matrizStrings.indices) {
+>     for (j in matrizStrings[i].indices) {
+>         println("matrizStrings[$i][$j] = ${matrizStrings[i][j]}")
+>     }
+> }
 
 Observa que aunque hemos declarado la matriz como inmutable con un _`val`_ podemos modificar su contenido. Esto es porque la referencia en memoria no cambia, ya que NO reasignamos en ningún momento la variable.
 
