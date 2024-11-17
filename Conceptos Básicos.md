@@ -1,14 +1,16 @@
 # Índice
+Aquí tienes el índice completado con los elementos faltantes integrados de manera estructurada:
+
 - [Variables y constantes](#variables-y-constantes)
 - [Inferencia de tipos](#inferencia-de-tipos)
 - [Tipos de datos](#tipos-de-datos)
     - [String](#string)
-    - [Literales de Cadenas](#literales-de-cadenas)
-    - [Formato de String](#formato-de-string)
-        - [Formateo de cadenas con `String.format()` en Kotlin](#formateo-de-cadenas-con-stringformat-en-kotlin)
-        - [Especificadores de formato](#especificadores-de-formato)
-        - [Ejemplos](#ejemplos)
-        - [Ventajas y precauciones](#ventajas-y-precauciones)
+        - [Literales de Cadenas](#literales-de-cadenas)
+        - [Formato de String](#formato-de-string)
+            - [Formateo de cadenas con `String.format()` en Kotlin](#formateo-de-cadenas-con-stringformat-en-kotlin)
+            - [Especificadores de formato](#especificadores-de-formato)
+            - [Ejemplos](#ejemplos)
+            - [Ventajas y precauciones](#ventajas-y-precauciones)
     - [Números](#números)
         - [Tipos de números enteros](#tipos-de-números-enteros)
         - [Tipos de números de decimales](#tipos-de-números-de-decimales)
@@ -21,7 +23,15 @@
             - [Constantes literales para enteros sin signo](#constantes-literales-para-enteros-sin-signo)
             - [Operaciones a nivel de bits](#operaciones-a-nivel-de-bits)
     - [Lógicos](#lógicos)
-        - [Las operaciones booleanas](#las-operaciones-booleanas)
+    - [Caracteres](#caracteres)
+    - [Arrays](#arrays)
+        - [Crear Arrays](#crear-arrays)
+            - [Con la función arrayOf()](#con-la-función-arrayof)
+            - [A partir de un rango](#a-partir-de-un-rango)
+            - [Con el constructor Array](#con-el-constructor-array)
+        - [Acceso y modificación](#acceso-y-modificación)
+        - [Matrices](#matrices)
+        - [Comparar arrays](#comparar-arrays)
 
 # Variables y constantes
 
@@ -786,13 +796,15 @@ val matrizTresDimensiones = Array(3) {
 ```
 [Prueba este código ▶](https://pl.kotl.in/ZEyi7fIyW)
 
-> [!INFO]
-> _¿Sabías que...?_
->Para poder visualizar una matriz en consola, es recomendable usar el método `contentToString()`. Pero con más de 2 dimensiones sólo mostrarán las direcciones de memoria en cada caso. Para estos últimos, el método `contentDeepToString()` que permite ver la matriz en su totalidad:
->```Kotlin
->for (fila in matriz) {
->	println(fila.contentToString())
->}
+> [!NOTE]
+> **¿Sabías que...?**
+>Para poder visualizar una matriz en consola, es recomendable usar el método `contentToString()`. Pero con más de 2 dimensiones sólo mostrarán las direcciones de memoria en cada caso.
+Para estos últimos, el método `contentDeepToString()` que permite ver la matriz en su totalidad:
+```kotlin
+for (fila in matriz) {
+     println(fila.contentToString())
+ }
+```
 
 #### Comparar arrays
 
