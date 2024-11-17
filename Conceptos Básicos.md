@@ -255,8 +255,8 @@ val saludo = """
 
 println(saludo)
 —-----------------------------------
-Hola, Pepe!
-Cómo ha ido el día?
+~$ Hola, Pepe!
+~$ Cómo ha ido el día?
 ```
 
 
