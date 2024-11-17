@@ -306,8 +306,7 @@ La función `String.format()` ofrece una funcionalidad similar a las plantilla
 Además, puedes asignar la cadena de formato a una variable, lo cual es útil cuando el formato debe cambiar, como en casos de localización que dependen del idioma o región del usuario.
 
 > [!CAUTION]
->**Precaución**  
-Al usar `String.format()`, ten cuidado de no equivocarte con la cantidad o posición de los argumentos y los placeholders.
+>Al usar `String.format()`, ten cuidado de no equivocarte con la cantidad o posición de los argumentos y los placeholders.
 
 
 ## Números
@@ -493,7 +492,8 @@ Un objeto booleano puede representar dos valores _`true`_ y _`false`_. Recuerda 
 | Conjunción  |   **&&**   |   AND    |
 |  Negación   |   **!**    |   NOT    |
 
->[!TIP] **Operadores vagos**
+>[!TIP]
+>**Operadores vagos**:
 >Los operadores booleanos funcionan de forma "perezosa", por lo que...
 >   - Si el primer operando es `true`, `||` no evaluará el segundo  operando.
 >   - Si el primer operando es `false`, `&&` no evaluará el segundo operando.
@@ -528,7 +528,8 @@ Los arrays son estructuras estáticas de datos que se almacenan en posiciones co
 
 Son estáticas porque no pueden/deben ampliar su tamaño. Esto se debe a que una nueva posición en el array debería ubicarse al final, en la posición adyacente a la de la última que haya en ese momento. El problema es que no se puede saber si dicha posición estará ocupada por otros datos de ese u otros programas.
 
->[!WARNING]  *Array vs ArrayList* [^3]
+>[!WARNING]
+>*Array vs ArrayList* [^3]:
 >Es importante tener clara la diferencia entre un Array (estático) y un ArrayList (dinámico). En este vídeo de nuestro amigo [Brais Moure](https://mouredev.com/brais-moure/) , a la hora de definir un array, realmente está declarando un ArrayList.
 >
 
@@ -618,7 +619,8 @@ Internamente, Kotlin usa clases para abstraer arrays de distintos tipos de datos
 Estas clases son: [ByteArray](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/), [CharArray](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char-array/), [ShortArray](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-short-array/), [IntArray](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/), [LongArray](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long-array/), [BooleanArray](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean-array/), [FloatArray](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float-array/) y [DoubleArray](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double-array/).
 
 
->[!WARNING] **Recomendación**
+>[!WARNING]
+>**Recomendación**:
 >En la [documentación oficial](https://kotlinlang.org/docs/arrays.html) se recomienda limitar el uso de arrays a situaciones muy específicas. 
 >El motivo es que los arrays son estructuras estáticas de datos, es decir, que son inmutables y no cambian durante la ejecución del programa. Al igual que el String, si se necesita otro array de distinto tamaño al establecido inicialmente, hay que crearlo en memoria y desreferenciar al anterior. 
 >
@@ -712,7 +714,7 @@ var matrizForma2 = arrayOf(Array<Int>(3) {0},
 ##### Mediante el constructor `Array()`
 Podemos utilizar _`Array()`_ de forma genérica para facilitar la construcción de matrices. Si creamos una función auxiliar facilitaremos bastante la creación de matrices de distintos tipos.
 
-[Prueba este código ▶](https://pl.kotl.in/_bSOztIaH?theme=darcula)
+
 ```Kotlin
 fun main() {
     val matrizStrings = crearMatriz(3, 3, "*")
@@ -739,7 +741,8 @@ fun crearMatriz(filas: Int, columnas: Int, valorInicial: String) = Array(filas) 
 ~$ *-*
 ~$ ***
  ```
-  
+[Prueba este código ▶](https://pl.kotl.in/_bSOztIaH?theme=darcula)
+
 > [!TIP]
 > _¡Ojo!_ 
 Con el bucle de arriba recorreremos los elementos de la matriz, pero… ¿Y si queremos acceder a los índices para modificar el valor de los elementos, igual que hacíamos en Java? Para ello podemos acceder a la propiedad indices, presente en las colecciones
