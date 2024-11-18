@@ -34,9 +34,9 @@ Aquí tienes el índice completado con los elementos faltantes integrados de man
         - [Comparar arrays](#comparar-arrays)
     - [Operadores](#operadores)
     - [Null Safety](#null-safety)
-	    - [Operador seguro](#operador-seguro)
-	    - [Operador Elvis](#operador-elvis)
-	    - [Operador de no nulidad](#operador-de-no-nulidad)
+	    - [Operador seguro](#operador-seguro-)
+	    - [Operador Elvis](#operador-elvis-)
+	    - [Operador de no nulidad](#operador-de-no-nulidad-)
 
 
 # Variables y constantes
