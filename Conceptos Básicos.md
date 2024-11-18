@@ -988,17 +988,16 @@ val longitud: Int = apellido!!.length
 
 A continuación tienes referentes documentales de las webs oficiales tanto de Kotlin como de Android sobre null safety:
 
-<div style="display: flex; align-items: center">
-    <img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXeb3XCD0Xy65MUlLIqr1KFb6zRXgoVX1LHiXLVV8JgEyz9Qbb3dUfzLrt848syyKYBvoa8mi-Sxnge3b487k59wtig87rwCJS7s1IdGUDj93UINFG-4w198LdMcVdGVfgpPEfPEz6JjA1ySE6nvEZRNA4Q?key=XNFZp9MjZe1FDQoomJ2CJA" width="120"  height="120" style="margin: 0 20"/>
-    <div style="display: flex; flex-direction: column">
-        <p style="margin: 0; border: 2px solid grey; padding: 1em 0.5em; border-radius: 5px">Null safety | Kotlin (Kotlin Help) <br/>
-            <a>https://kotlinlang.org/docs/null-safety.html</a></p>
-        <p style="border: 2px solid grey;padding: 1em 0.5em; border-radius: 5px">Nulabilidad en Kotlin (Android Developers)<br/>
-        <a>https://developer.android.com/codelabs/basic-android-kotlin-compose-nullability?hl=es-419#0</a>
-        </p>
-    </div>
-
+<div style="display: flex">
+	<img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXeb3XCD0Xy65MUlLIqr1KFb6zRXgoVX1LHiXLVV8JgEyz9Qbb3dUfzLrt848syyKYBvoa8mi-Sxnge3b487k59wtig87rwCJS7s1IdGUDj93UINFG-4w198LdMcVdGVfgpPEfPEz6JjA1ySE6nvEZRNA4Q?key=XNFZp9MjZe1FDQoomJ2CJA" width="100" style="margin: 0 auto"/>
 </div>
+### Documentación Oficial
+- **Null safety | Kotlin** (Kotlin Help)
+  - [Documentación completa](https://kotlinlang.org/docs/null-safety.html)
+
+### Recursos de Desarrollo
+- **Nulabilidad en Kotlin** (Android Developers)
+  - [Codelabs de Nulabilidad](https://developer.android.com/codelabs/basic-android-kotlin-compose-nullability?hl=es-419#0)
 
 
 
