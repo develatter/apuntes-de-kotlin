@@ -322,7 +322,7 @@ Además, puedes asignar la cadena de formato a una variable, lo cual es útil cu
 ## Números
 ### Tipos de números enteros  
 
-Para los números enteros, existen cuatro tipos con diferentes tamaños y rangos de valores: 
+Para los números[^8] enteros, existen cuatro tipos con diferentes tamaños y rangos de valores: 
 
 | Tipo  | Tamaño (bits) | Valor mínimo                      | Valor máximo                        |     |
 | ----- | ------------- | --------------------------------- | ----------------------------------- | --- |
@@ -485,10 +485,13 @@ Ejemplo:
 val x = (1 shl 2) and 0x000FF000  
 ```
 
+[^8]: Numbers - Kotlin Programming Language. (s. f.). Kotlin. https://kotlinlang.org/docs/numbers.html
+
 ---
 
 ## Lógicos
-Un objeto booleano puede representar dos valores _`true`_ y _`false`_. Recuerda que a diferencia de Java, _`Boolean`_ no puede ser nulo. Su contraparte *nullable* es _`Boolean`_.
+
+Un objeto booleano[^9] puede representar dos valores _`true`_ y _`false`_. Recuerda que a diferencia de Java, _`Boolean`_ no puede ser nulo. Su contraparte *nullable* es _`Boolean`_.
 
 > [!NOTE]
 > *¡No ocupan un bit!*
@@ -531,6 +534,10 @@ También es posible codificar los caracteres utilizando una secuencia escapada d
 ```Kotlin
 println('\uFF00')
 ```
+
+[^9]: Boolean - Kotlin Programming Language. (s. f.). Kotlin. https://kotlinlang.org/docs/booleans.html
+
+----
 
 ## Arrays
 
@@ -872,6 +879,126 @@ println(
 
 [^6]: ContentEquals - Kotlin Programming Language. (s. f.). Kotlin. [https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-equals.html](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-equals.html)
 [^7]: ContentDeepEquals - Kotlin Programming Language. (s. f.). Kotlin.[https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-deep-equals.html](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-deep-equals.html)
+
+## Operadores
+
+Los operadores[^10] en Kotlin son los habituales en otro lenguajes:
+
+| Categoría               |          Operadores          | Descripción                                                                                                             |
+| ----------------------- | :--------------------------: | ----------------------------------------------------------------------------------------------------------------------- |
+| Aritméticos             |   `+`, `-`, `*`, `/`, `%`    | Operaciones matemáticas básicas                                                                                         |
+| Asignación              |             `=`              | Asignación simple                                                                                                       |
+| Asignaciones aumentadas | `+=`, `-=`, `*=`, `/=`, `%=` | Combinan operación y asignación                                                                                         |
+| Incremento/Decremento   |          `++`, `--`          | Incrementar o decrementar en 1                                                                                          |
+| Lógicos[^11]            |       `&&`, \|\| , `!`       | Operadores AND, OR y NOT                                                                                                |
+| Igualdad                |          `==`, `!=`          | Igualdad estructural (equivalente a `equals()`)                                                                         |
+| Igualdad referencial    |         `===`, `!==`         | Comprueban si se referencia al mismo objeto                                                                             |
+| Comparación             |     `<`, `>`, `<=`, `>=`     | Comparaciones (equivalente a `compareTo()`)                                                                             |
+| Acceso a índice         |          `[index]`           | Equivalente a `get()` y `set()`                                                                                         |
+| Nulabilidad             |    `!!`, `?.`, `?:`, `?`     | Operadores para manejo de nulos:<br>- `!!`: Not-null assertion<br>- `?.`: Safe call<br>- `?:`: Elvis<br>- `?`: Nullable |
+| Referencia              |             `::`             | Crea referencia de miembro o clase                                                                                      |
+| Rangos                  |         `..`, `..<`          | Crea rangos con/sin final inclusivo                                                                                     |
+| String templates        |          `$`, `${}`          | Referencias a variables/expresiones en Strings                                                                          |
+
+Los operadores de nulabilidad serán muy útiles dada la característica _null safe_ de Kotlin. Más adelante los veremos en profundidad, pero ahí va un pequeño resumen:
+- `!!` : Afirma que una expresión no es nula. Solo debemos usarlo en caso de haber comprobado manualmente que un valor no es nulo para decirle al compilador que es seguro utilizarlo.
+- `?.` : Llama a métodos o propiedades solo si el objeto no es nulo. Lo que se conoce como una _Safe call_.
+- `?:` : Usa el valor de la derecha si el de la izquierda es nulo. Se conoce como operador _Elvis_.
+- `?` : Marca un tipo como _nullable_.
+
+[^10]: Operators and Special Symbols - Kotlin Programming Language. (s. f.). Kotlin. https://kotlinlang.org/docs/keyword-reference.html#operators-and-special-symbols
+[^11]: Equality - Kotlin Programming Language. (s. f.). Kotlin. https://kotlinlang.org/docs/equality.html
+
+---
+## Null Safety
+
+¿Qué es la seguridad de nulos o **Null Safety**? El valor nulo (`null`) está extendido en todos (o casi todos) los lenguajes de programación. Se usa para indicar la ausencia de un valor.
+
+En _Java_, si se intenta operar sobre un elemento nulo sin haberlo comprobado previamente, salta una excepción de puntero nulo ([NullPointerException](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/NullPointerException.html)). Si el código no atrapa esta excepción, el programa detiene su ejecución de forma inmediata (crash).
+
+_Kotlin_, en cambio, tiene un sistema de seguridad de nulos para evitar este tipo de errores. Esto se logra al comprobar la posibilidad de nulos en tiempo de compilación, en lugar de dejarlo para el tiempo de ejecución.
+
+Para empezar, por defecto Kotlin no admite valores nulos:
+```Kotlin
+var nombre = "Pepe"
+nombre = null // Error de compilación
+```
+
+Si se quiere indicar que una variable podría ser nula (_nullable_) hay que expresarlo en su tipo con el operador `?` .
+
+```Kotlin
+var nombre: String? = "Pepe"
+println(nombre)
+  
+nombre = null
+println(nombre)
+
+//—-----------------------------------
+~$ Pepe
+~$ null
+```
+### Operador seguro (?.)
+
+Kotlin usa el operador seguro `?.` en variables nullables (podrían ser nulas) para permitir acceder a sus miembros (propiedades y métodos) de forma segura. Si el valor es nulo, la expresión completa se evalúa a null:
+
+```Kotlin
+var cadena: String? = null
+val longitud: Int? = cadena?.length
+
+println(longitud)
+
+//—-----------------------------------
+~$ null
+```
+
+### Operador Elvis (?:)
+
+El operador Elvis `?:` sirve para proporcionar un valor por defecto en caso de que el valor a la izquierda sea nulo:
+
+```Kotlin
+val nombre : "Pepe"
+val apellido1: String? = null
+val apellido2: String? = "Fernández"
+val nombreCompleto: String = nombre
+        + " "
+        + apellido1 ?: "Expósito"
+        + apellido2 ?: "Expósito"
+
+println(nombreCompleto)
+
+//—-----------------------------------
+
+~$ Pepe Expósito Fernández
+ ```
+  
+Otros ejemplos del uso del operador Elvis: [ejemplo 1](https://pl.kotl.in/52M0snJsu), [ejemplo 2](https://pl.kotl.in/ZjiCPjZi1).
+
+### Operador de no nulidad (!!)
+
+El operador de no nulidad `!!` indica que la variable a la que acompaña no es nula:
+```Kotlin
+// Asume que apellido no es nulo
+val longitud: Int = apellido!!.length
+```
+
+> [!WARNING]
+> El operador `!!` podría provocar un `NullPointerException` si la variable es nula. Se recomienda evitar en la medida de lo posible este operador.
+
+### Más información
+
+A continuación tienes referentes documentales de las webs oficiales tanto de Kotlin como de Android sobre null safety:
+
+<div style="display: flex; align-items: center">
+    <img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXeb3XCD0Xy65MUlLIqr1KFb6zRXgoVX1LHiXLVV8JgEyz9Qbb3dUfzLrt848syyKYBvoa8mi-Sxnge3b487k59wtig87rwCJS7s1IdGUDj93UINFG-4w198LdMcVdGVfgpPEfPEz6JjA1ySE6nvEZRNA4Q?key=XNFZp9MjZe1FDQoomJ2CJA" width="120"  height="120" style="margin: 0 20"/>
+    <div style="display: flex; flex-direction: column">
+        <p style="margin: 0; border: 2px solid grey; padding: 1em 0.5em; border-radius: 5px">Null safety | Kotlin (Kotlin Help) <br/>
+            <a>https://kotlinlang.org/docs/null-safety.html</a></p>
+        <p style="border: 2px solid grey;padding: 1em 0.5em; border-radius: 5px">Nulabilidad en Kotlin (Android Developers)<br/>
+        <a>https://developer.android.com/codelabs/basic-android-kotlin-compose-nullability?hl=es-419#0</a>
+        </p>
+    </div>
+
+</div>
 
 
 
