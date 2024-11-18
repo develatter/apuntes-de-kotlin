@@ -988,9 +988,11 @@ val longitud: Int = apellido!!.length
 
 A continuación tienes referentes documentales de las webs oficiales tanto de Kotlin como de Android sobre null safety:
 
-<div style="display: flex">
-	<img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXeb3XCD0Xy65MUlLIqr1KFb6zRXgoVX1LHiXLVV8JgEyz9Qbb3dUfzLrt848syyKYBvoa8mi-Sxnge3b487k59wtig87rwCJS7s1IdGUDj93UINFG-4w198LdMcVdGVfgpPEfPEz6JjA1ySE6nvEZRNA4Q?key=XNFZp9MjZe1FDQoomJ2CJA" width="100" style="margin: 0 auto"/>
+<div style="display: flex; flex-direction: column">
+	<img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXeb3XCD0Xy65MUlLIqr1KFb6zRXgoVX1LHiXLVV8JgEyz9Qbb3dUfzLrt848syyKYBvoa8mi-Sxnge3b487k59wtig87rwCJS7s1IdGUDj93UINFG-4w198LdMcVdGVfgpPEfPEz6JjA1ySE6nvEZRNA4Q?key=XNFZp9MjZe1FDQoomJ2CJA" width="100" style="margin: 0 auto 20"/>
+	<hr/>
 </div>
+
 ### Documentación Oficial
 - **Null safety | Kotlin** (Kotlin Help)
   - [Documentación completa](https://kotlinlang.org/docs/null-safety.html)
