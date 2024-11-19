@@ -1360,7 +1360,7 @@ Pero nos preguntaremos cómo hacer el `for` con iteraciones que sabemos hacer de
 
 ```Kotlin
 for (numero in 1..10)
-	println(numero)
+    println(numero)
 ```
 [Prueba este código ▶](https://pl.kotl.in/WZQrEIaFU)
   
@@ -1368,7 +1368,7 @@ Es importante mencionar que el bucle de arriba irá de 1 en 1, si queremos que v
 
 ```Kotlin
 for (numero in 1..10 step 2)
-	println(numero)
+    println(numero)
 ```
 [Prueba este código ▶](https://pl.kotl.in/dAKZxyt0M)
   
@@ -1376,7 +1376,7 @@ Pero, ¿cómo podremos ir en vez de forma ascendente, descendente?, muy sencillo
 
 ```Kotlin
 for (numero in 10 downTo 0 step 2)
-	println(numero)
+    println(numero)
 ```
 [Prueba este código ▶](https://pl.kotl.in/mcUo-pohy)
   
@@ -1384,14 +1384,13 @@ Si queremos recorrer un array podemos hacerlo de dos formas:
 
 ```Kotlin
 for (i in array.indices) 
-
-     println(array[i])
+    println(array[i])
 ```
 [Prueba este código ▶](https://pl.kotl.in/vgpXrz312)
   
 ```Kotlin
 for ((i, v) in array.withIndex())
-	println("the element at $i is $v")
+    println("the element at $i is $v")
 ```
 [Prueba este código ▶](https://pl.kotl.in/HXy0k3chi)
 
@@ -1403,8 +1402,8 @@ Se ejecuta mientras una condición sea verdadera.[^15]
 ```Kotlin
 var x = 7
 while ( x > 0 ){
-	println(x)
-	x--
+    println(x)
+    x--
 }
 ```
 [Prueba este código ▶](https://pl.kotl.in/nG6FERQwa)
@@ -1415,8 +1414,8 @@ Es similar al _`While`_ pero se garantiza que al menos se ejecutará una vez.[^1
 var x: Int = 0
 
 do {
-	println(x)
-	x++
+    println(x)
+    x++
 } while( x < 10 )
 ```
 [Prueba este código ▶](https://pl.kotl.in/lypOJ7d1T)
