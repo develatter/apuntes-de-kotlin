@@ -36,9 +36,9 @@
 	- [Operador Elvis](#operador-elvis-)
 	- [Operador de no nulidad](#operador-de-no-nulidad-)
 - [Rangos](#rangos)
-- [Control de flujo](control-de-flujo)
+- [Control de flujo](#control-de-flujo)
 	- [Condicionales](#condicionales)
-		- [if - else if - else](if-else-if-else)
+		- [[if - else if - else]]
 		- [when](#when)
 	- [Bucles](#bucles)
 	    - [for](#for)
@@ -1143,11 +1143,11 @@ for (x in 10 downTo 1) { ... } //descendente
 [^12]: Basic syntax | Kotlin. (s. f.-c). Basic Syntax. Ranges. [https://kotlinlang.org/docs/basic-syntax.html#ranges](https://kotlinlang.org/docs/basic-syntax.html#ranges)
 [^13]: Idioms. (2024, September 25). Kotlin. Retrieved October 3, 2024, from [https://kotlinlang.org/docs/idioms.html#iterate-over-a-range](https://kotlinlang.org/docs/idioms.html#iterate-over-a-range)
 
-# Control de flujo
+# j
 
 Como ya sabemos de otros lenguajes de programación (p.e. Java), podemos controlar la ejecución de determinados bloques de código para que se ejecuten de forma condicional o repetitiva. 
 ## Condicionales
-### if - else if - else
+### h
 La sentencia if en Kotlin funciona como en otros lenguajes:
 
 
