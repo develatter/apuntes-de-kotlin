@@ -32,13 +32,21 @@ Aquí tienes el índice completado con los elementos faltantes integrados de man
         - [Acceso y modificación](#acceso-y-modificación)
         - [Matrices](#matrices)
         - [Comparar arrays](#comparar-arrays)
-    - [Operadores](#operadores)
-    - [Null Safety](#null-safety)
-	    - [Operador seguro](#operador-seguro-)
-	    - [Operador Elvis](#operador-elvis-)
-	    - [Operador de no nulidad](#operador-de-no-nulidad-)
-
-
+- [Operadores](#operadores)
+- [Null Safety](#null-safety)
+	- [Operador seguro](#operador-seguro-)
+	- [Operador Elvis](#operador-elvis-)
+	- [Operador de no nulidad](#operador-de-no-nulidad-)
+- [Rangos](#rangos)
+- [Control de flujo](control-de-flujo)
+	- [Condicionales](#condicionales)
+		- [if - else if - else](if-else-if-else)
+		- [when](#when)
+	- [Bucles](#bucles)
+	    - [for](#for)
+	    - [while](#while)
+	    - [do-while](#do-while)
+---
 # Variables y constantes
 
 Kotlin permite declarar variables[^1] usando las siguientes palabras reservadas: **val** (value) y **var** (variable).
@@ -886,7 +894,7 @@ println(
 [^6]: ContentEquals - Kotlin Programming Language. (s. f.). Kotlin. [https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-equals.html](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-equals.html)
 [^7]: ContentDeepEquals - Kotlin Programming Language. (s. f.). Kotlin.[https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-deep-equals.html](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/content-deep-equals.html)
 
-## Operadores
+# Operadores
 
 Los operadores[^10] en Kotlin son los habituales en otro lenguajes:
 
@@ -916,7 +924,7 @@ Los operadores de nulabilidad serán muy útiles dada la característica _null s
 [^11]: Equality - Kotlin Programming Language. (s. f.). Kotlin. https://kotlinlang.org/docs/equality.html
 
 ---
-## Null Safety
+# Null Safety
 
 ¿Qué es la seguridad de nulos o **Null Safety**? El valor nulo (`null`) está extendido en todos (o casi todos) los lenguajes de programación. Se usa para indicar la ausencia de un valor.
 
@@ -943,7 +951,7 @@ println(nombre)
 ~$ Pepe
 ~$ null
 ```
-### Operador seguro (?.)
+## Operador seguro (?.)
 
 Kotlin usa el operador seguro `?.` en variables nullables (podrían ser nulas) para permitir acceder a sus miembros (propiedades y métodos) de forma segura. Si el valor es nulo, la expresión completa se evalúa a null:
 
@@ -957,7 +965,7 @@ println(longitud)
 ~$ null
 ```
 
-### Operador Elvis (?:)
+## Operador Elvis (?:)
 
 El operador Elvis `?:` sirve para proporcionar un valor por defecto en caso de que el valor a la izquierda sea nulo:
 
@@ -979,7 +987,7 @@ println(nombreCompleto)
   
 Otros ejemplos del uso del operador Elvis: [ejemplo 1](https://pl.kotl.in/52M0snJsu), [ejemplo 2](https://pl.kotl.in/ZjiCPjZi1).
 
-### Operador de no nulidad (!!)
+## Operador de no nulidad (!!)
 
 El operador de no nulidad `!!` indica que la variable a la que acompaña no es nula:
 ```Kotlin
@@ -991,7 +999,6 @@ val longitud: Int = apellido!!.length
 > El operador `!!` podría provocar un `NullPointerException` si la variable es nula. Se recomienda evitar en la medida de lo posible este operador.
 
 ### Más información
-
 A continuación tienes referentes documentales de las webs oficiales tanto de Kotlin como de Android sobre null safety:
 
 <div style="display: flex; flex-direction: column">
@@ -999,13 +1006,423 @@ A continuación tienes referentes documentales de las webs oficiales tanto de Ko
 	<hr/>
 </div>
 
-### Documentación Oficial
+##### Documentación Oficial
 - **Null safety | Kotlin** (Kotlin Help)
   - [Documentación completa](https://kotlinlang.org/docs/null-safety.html)
 
-### Recursos de Desarrollo
+##### Recursos de Desarrollo
 - **Nulabilidad en Kotlin** (Android Developers)
   - [Codelabs de Nulabilidad](https://developer.android.com/codelabs/basic-android-kotlin-compose-nullability?hl=es-419#0)
 
+---
+# Rangos
+
+Un rango[^12] no es un tipo de dato como tal. Se trata de un intervalo con un valor de inicio y otro de fin. Se puede definir estableciendo ambos valores y separándolos con el operador `..` :
+
+  
+```Kotlin
+val abecedarioMinusculas = "a".."z"
+
+println(abecedarioMinusculas)
+println(abecedarioMinusculas::class.simpleName)
+
+//—-----------------------------------
+//~$ a..z
+//~$ ComparableRange
+```
+
+Se puede definir un intervalo con cualquier tipo que sea comparable.(números, letras, etc.).
+El operador in permite comprobar si un valor dado se encuentra en un rango:
+
+```Kotlin
+val abecedarioMinusculas = "a".."z"
+
+println(abecedarioMinusculas)
+println("n" in abecedarioMinusculas)
+println("N" in abecedarioMinusculas)
+  
+//—-----------------------------------
+//~$ a..z
+//~$ true
+//~$ false
+```
+
+Es importante entender que, aunque Kotlin infiere muchas cosas, no es consciente de que un rango sea decreciente:
+
+```Kotlin
+val abecedarioMinusculas = "z".."a"
+
+println(abecedarioMinusculas)
+println("n" in abecedarioMinusculas) //no encuentra el carácter!!
+
+  
+
+//—-----------------------------------
+//~$ a..z
+//~$ false
+
+```
+  
+Cuando un rango sea decreciente, hay que indicarlo. Para mostrar un ejemplo, usaremos rangos de enteros ya que los de String no son rangos ordenados:
+
+```Kotlin
+val rangoNumeros = (1..10).reversed()
+
+println(rangoNumeros)
+
+//—-----------------------------------
+//~$ 10 downTo 1 step 1
+
+```
+
+En [este enlace](https://pl.kotl.in/Qx7AOj6I0) puedes probar código de ejemplo de usos de los rangos.
+
+Hasta ahora todos los rangos que hemos visto son inclusivos, es decir, incluyen el primer y el último valor del rango. Para hacer rangos excluyentes (que no incluyan alguno de los límites) podemos hacerlo de varias formas:
 
 
+```Kotlin
+val rangoExclusivo = 1 until 6 
+println("Primera forma")
+for (i in rangoExclusivo) print(i)
+
+val rangoExclusivo2 = 1.until(6)
+println("\nSegunda forma")
+for (i in rangoExclusivo2) print(i)
+
+val rangoExclusivo3 = 1 ..< 6
+println("\nTercera forma")
+for (i in rangoExclusivo3) print(i)
+
+//------------------------—------
+//Todas las variantes generan el mismo rango
+//~$ 12345
+ ```
+ [Prueba este código ▶](https://pl.kotl.in/4usCSdBuZ) 
+
+Esta forma de generar rangos solo excluye el final. Si queremos excluir el principio, deberemos hacerlo a la antigua usanza:
+
+```Kotlin
+val start = 0
+val end = 10
+val rangoExclusivo = (start + 1)..< end
+rangoExclusivo.forEach{i -> print(i)}
+//---------—---------
+//~$ 123456789
+```
+[Prueba este código ▶](https://pl.kotl.in/yQlqoespk)
+
+Esto funciona también con rangos de **caracteres**:
+```Kotlin
+val rango = 'a'+ 1 ..< 'z'
+for (letra in rango) {
+	print(letra)
+}
+
+//-----------------------------
+//~$ bcdefghijklmnopqrstuvwxy
+```
+ [Prueba este código ▶](https://pl.kotl.in/-uJ2huliG)
+
+> [!NOTE]
+> Igual a estas alturas ya te has dado cuenta, pero si creas un rango de Strings (“a”..”z”) Kotlin te permite imprimirlo o comprobar si algún elemento está incluido en él, pero no iterar en él.
+
+Por resumir, estas son algunas de las formas con las que podríamos iterar un rango[^13]. 
+
+```Kotlin
+for (i in 1..100) { ... }  // final cerrado: Incluye el 100
+
+for (i in 1..<100) { ... } // final abierto: No incluye el 100
+
+for (i in 1+1..<100) { ... } //final y principio cerrados
+
+for (x in 2..10 step 2) { ... } //ascendente con paso 2
+
+for (x in 10 downTo 1) { ... } //descendente
+
+(1..10).forEach { ... } //de forma declarativa
+```
+
+[^12]: Basic syntax | Kotlin. (s. f.-c). Basic Syntax. Ranges. [https://kotlinlang.org/docs/basic-syntax.html#ranges](https://kotlinlang.org/docs/basic-syntax.html#ranges)
+[^13]: Idioms. (2024, September 25). Kotlin. Retrieved October 3, 2024, from [https://kotlinlang.org/docs/idioms.html#iterate-over-a-range](https://kotlinlang.org/docs/idioms.html#iterate-over-a-range)
+
+# Control de flujo
+
+Como ya sabemos de otros lenguajes de programación (p.e. Java), podemos controlar la ejecución de determinados bloques de código para que se ejecuten de forma condicional o repetitiva. 
+## Condicionales
+### if - else if - else
+La sentencia if en Kotlin funciona como en otros lenguajes:
+
+
+```Kotlin
+val a = 3
+val b = 78
+var valorMaximo = 0
+
+if (a > b)
+    valorMaximo = a
+else
+    valorMaximo = b
+
+// Lo anterior, en una sola línea:
+
+valorMaximo = if (a > b) a else b
+
+// Lo anterior, en bloques de código:
+
+valorMaximo = if (a > b) {
+    println("El máximo es $a")
+    a
+} else {
+    println("El máximo es $b")
+    b
+}
+
+//—-----------------------------------
+//~$ Opción 1:
+//~$ El máximo es 78
+//~$ Opción 2:
+//~$ El máximo es 78
+//~$ Opción 3:
+//~$ El máximo es 78
+
+```
+  [Prueba este código ▶ ](https://pl.kotl.in/CfaYA5h7G)
+  
+En la opción 3 del ejemplo anterior, donde el if se usa como una expresión (es decir, una sentencia que devuelve un resultado) es obligatorio el uso de else para garantizar que dicha expresión devuelve un valor.
+
+> [!TIP]
+> El funcionamiento  del `if-else` es tan versátil que Kotlin no necesita usar el operador ternario ?, por lo que no lo tiene implementado.
+### when
+El switch que se usa en Java para ejecutar un bloque de código de entre varios según el valor de un dato se conoce como [when](https://kotlinlang.org/docs/control-flow.html#when-expression) en Kotlin.[^14]
+
+Esta sentencia permite mostrar de forma más sencilla la evaluación de varias condiciones, en lugar de usar una cascada de sentencias `if - else if - else`:
+
+
+```Kotlin
+val posicion = 3
+
+when (posicion) {
+	1 -> print("Medalla de ORO")
+	2 -> print("Medalla de PLATA")
+	3 -> print("Medalla de BRONCE")
+	else -> {
+		print("No obtiene medalla")
+	}
+}
+//—-----------------------------------
+//~$ Medalla de BRONCE
+```
+[Prueba este código ▶](https://pl.kotl.in/GZOLn7Eqc)
+
+También pueden usarse expresiones en las ramas de condiciones:
+
+```Kotlin
+val posicion = 3
+when {
+	posicion == 1 -> print("Medalla de ORO")
+	posicion == 2 -> print("Medalla de PLATA")
+	posicion == 3 -> print("Medalla de BRONCE")
+	else -> {
+		 print("No obtiene medalla")
+	}
+}
+
+//—-----------------------------------
+//~$ Medalla de BRONCE  
+```
+
+Además de en una sentencia como la anterior, when se puede usar como una expresión:
+
+```Kotlin
+val posicion = 3
+val medalla = when (posicion) {
+	1 -> "ORO"
+	2 -> "PLATA"
+	3 -> "BRONCE"
+	else -> "-"
+}
+
+println(medalla)
+
+//—-----------------------------------
+//~$ BRONCE
+
+```
+  [Prueba este código ▶](https://pl.kotl.in/ipcJCYwYv)
+
+> [!NOTE] 
+>  Cuando se usa `when` como una expresión es obligatorio el `else`, salvo que se evalúen todas las posibles opciones (todos los valores de un array o de un enum, etc.).
+
+Pueden combinarse varios valores para que ejecuten el mismo bloque de código:
+
+```Kotlin
+val posicion = 3
+val mensaje = when (posicion) {
+	1, 2, 3 -> "Ha ganado medalla!"
+	else -> "Lo sentimos mucho. Que no decaiga el ánimo!"
+}
+
+println(mensaje)  
+
+//—-----------------------------------
+//~$ Ha ganado medalla!
+```
+
+También pueden usarse expresiones en las condiciones:
+
+```Kotlin
+val numeroGanador = "8"
+val numero = 3
+val mensaje = when (numero) {
+	numeroGanador.toInt() -> "Has ganado!"
+	else -> "Lo sentimos mucho. Sigue intentándolo."
+}
+println(mensaje)
+
+//—-----------------------------------
+//~$ Lo sentimos mucho. Sigue intentándolo.
+
+```
+
+Se puede usar el operador in para rangos y colecciones:
+
+```Kotlin
+val numero = 8
+val delUnoAlDiez = 1..10
+val mensaje = when (numero) {
+	in delUnoAlDiez -> "Está entre los 10 primeros!"
+	else -> "No está en la mejor clasificación."
+}
+
+println(mensaje)
+
+// Otra forma
+val numero = 8
+val delUnoAlDiez = 1..10
+val mensaje = when (numero) {
+	!in delUnoAlDiez -> "No está en la mejor clasificación."
+	else -> "Está entre los 10 primeros!"
+}
+
+println(mensaje)
+
+//—-----------------------------------
+//~$ Está entre los 10 primeros!
+//~$ Está entre los 10 primeros!
+    
+```
+
+  También se puede utilizar el operador `is` para ejecutar determinadas acciones según el tipo de dato:
+
+```Kotlin
+fun main() {
+    val nombre1 = "Pepe"
+    val nombre2 = "Ana"
+    val numero = 10
+    var empiezaPorAOEsDiez = hasPrefix(nombre1)
+
+    println(empiezaPorAOEsDiez)
+    empiezaPorAOEsDiez = hasPrefix(nombre2)
+    println(empiezaPorAOEsDiez)
+
+    empiezaPorAOEsDiez = hasPrefix(numero)
+    println(empiezaPorAOEsDiez)
+
+}
+ 
+fun hasPrefix(x: Any) = when(x) {
+    is String -> x.startsWith("A")
+    is Int -> x == 10
+    else -> false
+}
+```
+[Prueba este código ▶](https://pl.kotl.in/gHd7UOjVk)
+
+[^14]:MoureDev by Brais Moure. (2019b, agosto 8). KOTLIN: Curso ANDROID desde CERO - SENTENCIA WHEN - Lección 4 [2020] | Español | MoureDev [Vídeo]. YouTube. [https://www.youtube.com/watch?v=ufsrPf7vao4](https://www.youtube.com/watch?v=ufsrPf7vao4)
+## Bucles
+Los bucles son similares a Java, al igual que las [expresiones para interrumpirlos](https://kotlinlang.org/docs/returns.html).
+
+Los bucles son estructuras de control fundamentales en la programación que nos permiten ejecutar una serie de instrucciones repetidamente mientras se cumpla una determinada condición. En Kotlin, al igual que en Java, los tipos más comunes de bucles son:
+- **For**
+- **While**
+- **Do-While**
+
+Muchas veces para modificar el flujo de ejecución usaremos las conocidas expresiones:
+- **break**: termina inmediatamente la ejecución de las instrucciones dentro del bucle, saltando a la siguiente línea después del bucle.
+- **continue**: salta el código que haya dentro del cuerpo del bucle, a la siguiente iteración.
+
+### For
+Se utiliza cuando se conoce de antemano el número de iteraciones. En Kotlin, para crear bucles de tipo for, usaremos los ya conocidos `forEach`.
+
+```Kotlin
+for (item in collection) print(item)
+```
+
+Pero nos preguntaremos cómo hacer el `for` con iteraciones que sabemos hacer de Java, pues en este caso usaremos los Rangos que vimos anteriormente. En el ejemplo de abajo podemos observar un bucle `for`, donde se le asignará a la variable numero, en cada iteración, el valor del 1 al 10.
+
+```Kotlin
+for (numero in 1..10)
+	println(numero)
+```
+[Prueba este código ▶](https://pl.kotl.in/WZQrEIaFU)
+  
+Es importante mencionar que el bucle de arriba irá de 1 en 1, si queremos que vaya de 2 en 2, entonces al final del rango le pondremos `step 2`:
+
+```Kotlin
+for (numero in 1..10 step 2)
+	println(numero)
+```
+[Prueba este código ▶](https://pl.kotl.in/dAKZxyt0M)
+  
+Pero, ¿cómo podremos ir en vez de forma ascendente, descendente?, muy sencillo haremos uso del `downTo`, también podemos ayudarnos del `step` en estos casos.
+
+```Kotlin
+for (numero in 10 downTo 0 step 2)
+	println(numero)
+```
+[Prueba este código ▶](https://pl.kotl.in/mcUo-pohy)
+  
+Si queremos recorrer un array podemos hacerlo de dos formas:
+
+```Kotlin
+for (i in array.indices) 
+
+     println(array[i])
+```
+[Prueba este código ▶](https://pl.kotl.in/vgpXrz312)
+  
+```Kotlin
+for ((i, v) in array.withIndex())
+	println("the element at $i is $v")
+```
+[Prueba este código ▶](https://pl.kotl.in/HXy0k3chi)
+
+En este último caso **`array.withIndex()`** devuelve un par de valores, el índice y el valor del elemento. `(i, v)` es una _desestructuración_ de este par.
+
+### While
+Se ejecuta mientras una condición sea verdadera.[^15]
+
+```Kotlin
+var x = 7
+while ( x > 0 ){
+	println(x)
+	x--
+}
+```
+[Prueba este código ▶](https://pl.kotl.in/nG6FERQwa)
+### Do-While
+Es similar al _`While`_ pero se garantiza que al menos se ejecutará una vez.[^16]
+
+```Kotlin
+var x: Int = 0
+
+do {
+	println(x)
+	x++
+} while( x < 10 )
+```
+[Prueba este código ▶](https://pl.kotl.in/lypOJ7d1T)
+
+
+[^15]: Conditions and loops | Kotlin. (s. f.-b). Kotlin Help. [https://kotlinlang.org/docs/control-flow.html#while-loops](https://kotlinlang.org/docs/control-flow.html#while-loops)
+[^16]: Conditions and loops | Kotlin. (s. f.-b). Kotlin Help. [https://kotlinlang.org/docs/control-flow.html#while-loops](https://kotlinlang.org/docs/control-flow.html#while-loops)
