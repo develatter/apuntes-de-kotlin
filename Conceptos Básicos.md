@@ -1,6 +1,4 @@
 # Índice
-Aquí tienes el índice completado con los elementos faltantes integrados de manera estructurada:
-
 - [Variables y constantes](#variables-y-constantes)
 - [Inferencia de tipos](#inferencia-de-tipos)
 - [Tipos de datos](#tipos-de-datos)
