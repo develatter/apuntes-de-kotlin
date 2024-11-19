@@ -38,7 +38,11 @@
 - [Rangos](#rangos)
 - [Control de flujo](#control-de-flujo)
 	- [Condicionales](#condicionales)
+<<<<<<< HEAD
 		- [[if - else if - else]]
+=======
+		- [if - else if - else](#if---else-if---else)
+>>>>>>> origin/main
 		- [when](#when)
 	- [Bucles](#bucles)
 	    - [for](#for)
