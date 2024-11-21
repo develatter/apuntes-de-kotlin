@@ -44,6 +44,6 @@ Este documento ha sido diseñado y redactado por estudiantes del curso de 2º DA
 
 Para la redacción de muchos de los contenidos se ha utilizado la [documentación oficial de Kotlin](https://kotlinlang.org/docs/getting-started.html) como referencia.
 
-# Índice de contenidos
+# Contenidos
 - [Conceptos Básicos](Conceptos%20Básicos.md)
-
+- [Ejercicios resueltos](https://github.com/develatter/KotlinPractice)
