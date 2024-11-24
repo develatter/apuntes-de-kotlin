@@ -986,7 +986,6 @@ println(nombreCompleto)
 Otros ejemplos del uso del operador Elvis: [ejemplo 1](https://pl.kotl.in/52M0snJsu), [ejemplo 2](https://pl.kotl.in/ZjiCPjZi1).
 
 ## Operador de no nulidad (!!)
-
 El operador de no nulidad `!!` indica que la variable a la que acompaña no es nula:
 ```Kotlin
 // Asume que apellido no es nulo
@@ -1422,4 +1421,344 @@ do {
 
 
 [^15]: Conditions and loops | Kotlin. (s. f.-b). Kotlin Help. [https://kotlinlang.org/docs/control-flow.html#while-loops](https://kotlinlang.org/docs/control-flow.html#while-loops)
-[^16]: Conditions and loops | Kotlin. (s. f.-b). Kotlin Help. [https://kotlinlang.org/docs/control-flow.html#while-loops](https://kotlinlang.org/docs/control-flow.html#while-loops)
+[^16]: Conditions and loops | Kotlin. (s. f.-b). Kotlin Help. [https://kotlinlang.org/docs/control-flow.html#while-loops](https://kotlinlang.org/docs/control-flow.html#while-loops
+
+---
+# Funciones
+
+Una **función** es un conjunto de instrucciones que realizan una tarea específica y se encuentran empaquetadas como una unidad. En **Kotlin**, las funciones son lo que se conoce como _[ciudadanos de primera clase](https://en.wikipedia.org/wiki/First-class_function)_, lo que permite tratarlas como objetos que pueden ser almacenados en variables, pasados como argumentos a otras funciones y devueltos como resultado de funciones, dándoles una flexibilidad y expresividad funcional que facilita la _creación de código modular y reutilizable_.
+
+Para declarar funciones en Kotlin, usamos la palabra reservada fun:
+
+```Kotlin
+fun double(x: Int): Int {
+    return 2 * x
+}
+```
+
+## Partes de una función
+Las funciones en Kotlin tienen las siguientes partes:
+- **Declaración**: se inicia con la palabra reservada `fun`.
+- **Nombre**: es el identificador de la función.
+- **Parámetros**: son los valores que la función recibe para realizar su tarea.
+- **Tipo de retorno**: es el tipo de dato que la función devuelve como resultado.
+- **Cuerpo**: es el bloque de código que contiene las instrucciones que la función ejecuta.
+
+<img  src="https://i.imgur.com/tDHEmSr.png"/>
+
+Habrás observado que _no hay un modificador de acceso_ . En Kotlin todas las funciones son _públicas por defecto_, a no ser que se le diga lo contrario.
+
+Existe un tipo de retorno que igual no conoces, **Unit**. El funcionamiento de Unit es _similar al de void en Java_, salvo que a diferencia de este último no es una palabra reservada, sino un tipo de valor más. En muchas ocasiones Unit estará implícito y no será necesario ponerlo:
+
+```Kotlin
+fun imprimirMensaje(mensaje: String): Unit { 
+    println(mensaje) 
+}
+  
+//Equivalentes
+
+fun imprimirMensaje(mensaje: String){ 
+    println(mensaje) 
+}
+```
+
+Unit es un tipo de valor con una _única instancia llamada Unit_. Esto significa que puedes tratarlo como un objeto y devolverlo explícitamente, algo que igual ahora no te dice mucho, pero te resultará útil más adelante cuando comprendas cómo utilizar funciones de orden superior.
+## Funciones como expresión
+
+Si la función[^17] que estás declarando retorna una única expresión, puedes ahorrarte las llaves (`{}`) y la palabra reservada `return` y sustituirlas por un `=`. Cuando el tipo de retorno pueda ser inferido por el compilador también puedes ahorrártelo. Las siguientes funciones son totalmente equivalentes:
+
+```Kotlin
+//Como expresión con tipo
+fun double(x: Int): Int = x * 2
+
+//Como expresión con tipo inferido
+fun double(x: Int)= x * 2
+
+//Forma tradicional
+fun double(x: Int): Int {
+    return x * 2
+}
+```
+
+## Funciones con número variable de argumentos
+Una función puede tener un número [variable de parámetros](https://kotlinlang.org/docs/arrays.html#pass-variable-number-of-arguments-to-a-function). Usando el modificador `vararg` se puede pasar un número variable de argumentos a una función. Para pasar un array con un número variable de elementos a una función, puedes usar el _operador de propagación_ (`*`). El operador de propagación pasa cada elemento del array como argumentos individuales a la función:
+
+```Kotlin
+fun main() {
+    val lettersArray = arrayOf("c", "d")
+    printAllStrings("a", "b", *lettersArray)
+    // Equivalente a poonr printAllStrings("a", "b", "c", "d")
+}
+
+//Puede recibir un número variable de argumentos individuales.
+fun printAllStrings(vararg strings: String) {
+    for (string in strings) {
+        print(string)
+    }
+}
+```
+
+## Argumentos por defecto
+En Kotlin, puedes asignar valores por defecto a los parámetros de una función. De esta manera, si no se proporciona un valor para un parámetro, se usará el valor por defecto:
+
+```Kotlin
+fun main() {
+    printMessage("Hola")
+    println()
+    printMessage("Hola", 3)
+}
+
+fun printMessage(message: String, count: Int = 1) {
+    for (i in 0 until count) {
+        println(message)
+    }
+}
+```
+[Prueba este código ▶](https://pl.kotl.in/1fs1-TgkY)]
+
+### Herencia y valores por defecto
+
+Cuando se sobrescribe un método que tiene parámetros con valores por defecto, es importante tener en cuenta que:
+
+- La función que sobrescribe siempre utiliza los valores por defecto del método base.
+- No se permite especificar valores por defecto en la declaración del método que sobrescribe.
+
+Ejemplo:
+
+```kotlin
+open class A {
+    open fun foo(i: Int = 10) { /*...*/ }
+}
+
+class B : A() {
+    override fun foo(i: Int) { /*...*/ }  // No se permite valor por defecto
+}
+```
+
+### Lambdas y parámetros por defecto
+
+Si el último argumento después de parámetros con valores por defecto es una lambda, existen varias formas de realizar la llamada:
+
+```kotlin
+fun foo(
+    bar: Int = 0,
+    baz: Int = 1,
+    qux: () -> Unit,
+) { /*...*/ }
+
+// Diferentes formas de llamar a la función:
+
+foo(1) { println("hola") }     
+// Usa el valor por defecto baz = 1
+
+foo(qux = { println("hola") }) 
+// Usa ambos valores por defecto (bar = 0 y baz = 1)
+
+foo { println("hola") }        
+// Usa ambos valores por defecto (bar = 0 y baz = 1)
+```
+## Llamar argumentos por su nombre
+
+Cuando invocas a una función, puedes asignar un valor a un argumento llamándolo por su nombre. Esto permite cambiar el orden de los argumentos y proporcionar solo los argumentos que necesitas:
+
+```kotlin
+fun reformat(
+    str: String,
+    normalizeCase: Boolean = true,
+    upperCaseFirstLetter: Boolean = true,
+    divideByCamelHumps: Boolean = false,
+    wordSeparator: Char = ' ',
+) {
+    /*...*/
+}
+
+reformat("hola") // Usa los valores por defecto
+
+reformat("hola mundo", divideByCamelHumps = true) 
+// Usa los valores por defecto y divideByCamelHumps = true
+```
+
+### Orden y llamadas con argumentos nombrados
+
+Cuando un parámetro con valor por defecto precede a un parámetro sin valor por defecto, el valor por defecto solo puede utilizarse mediante llamadas con argumentos nombrados:
+
+```kotlin
+fun foo(
+    bar: Int = 0,
+    baz: Int,
+) { /*...*/ }
+
+foo(baz = 1) // Se usa el valor por defecto bar = 0
+```
+
+
+## Ámbito de las funciones
+
+### Funciones de nivel superior
+Una característica distintiva de Kotlin es la capacidad de _declarar funciones a nivel superior_ en un archivo, sin necesidad de crear una clase contenedora. Esto contrasta con otros lenguajes como Java.
+
+Además de las funciones de nivel superior, Kotlin permite declarar funciones como:
+- Funciones locales
+- Funciones miembro
+- Funciones de extensión
+### Funciones locales
+
+Kotlin soporta funciones locales, que son funciones definidas dentro de otras funciones. Veamos un ejemplo práctico:
+
+```kotlin
+fun busquedaProfundidad(grafo: Grafo) {
+    fun buscar(actual: Vertice, visitados: MutableSet<Vertice>) {
+        if (!visitados.add(actual)) return
+        for (v in actual.vecinos)
+            buscar(v, visitados)
+    }
+    buscar(grafo.vertices[0], HashSet())
+}
+```
+
+Una característica poderosa de las funciones locales es que pueden acceder a las variables locales de las funciones externas (closure). Por ejemplo, podemos refactorizar el ejemplo anterior:
+
+```kotlin
+fun busquedaProfundidad(grafo: Grafo) {
+    val visitados = HashSet<Vertice>()
+    fun buscar(actual: Vertice) {
+        if (!visitados.add(actual)) return
+        for (v in actual.vecinos)
+            buscar(v)
+    }
+
+    buscar(grafo.vertices[0])
+}
+```
+
+### Funciones miembro
+Las funciones miembro son aquellas que se definen dentro de una clase u objeto:
+
+```kotlin
+class Ejemplo {
+    fun saludar() { print("Hola") }
+}
+```
+
+Para invocar funciones miembro se utiliza la notación de punto:
+
+```kotlin
+Ejemplo().saludar() // crea una instancia de la clase Ejemplo y llama a saludar
+```
+
+### Funciones de extensión
+Las funciones de extensión[^19] permiten añadir a una clase o interfaz funcionalidad extra sin necesidad de usar herencia o decoradores. 
+
+Declarar funciones de extensión es bastante sencillo, solo es necesario declarar la función con el prefijo del tipo que va a recibir la extensión, como en el siguiente ejemplo:
+
+```Kotlin
+fun String.repetir(n: Int): String {
+    return (1..n).joinToString("") { this }
+}
+
+printl("Hola".repetir(3)) // Imprime "HolaHolaHola"
+```
+
+En este contexto la palabra reservada **`this`** corresponde al objeto que invoca a la función de extensión. Esto también podríamos hacerlo con funciones con _tipos genéricos_:
+
+```Kotlin
+fun <T> List<T>.penultimo(): T {
+    return this[size - 2]
+}
+//Devuelve el penúltimo objeto de una lista del tipo que se declare
+```
+
+> [!IMPORTANT]
+> **Las funciones de extensión se resuelven estáticamente.**
+> Las extensiones no modifican las clases ni les añaden nuevos miembros. Por ello, qué extensión de función se va a llamar se decide en tiempo de compilación basándose en el tipo del objeto receptor.
+> ```Kotlin
+> open class Shape
+>class Rectangle: Shape()
+>
+>fun Shape.getName() = "Shape"
+>fun Rectangle.getName() = "Rectangle"
+>fun printClassName(s: Shape) {
+>    println(s.getName())
+>}
+>
+>printClassName(Rectangle()) //Imprime 'Shape'
+>```
+
+Si se define una función de extensión de la misma manera exacta que una función miembro de una clase, la función miembro siempre tendrá prioridad.  
+
+```Kotlin
+class Example {
+    fun printFunctionType() { println("Class method") }
+}
+
+fun Example.printFunctionType() { println("Extension function") }
+
+Example().printFunctionType() // Imprime "Class method"
+```
+
+Para funciones de extensión de objetos _que puedan ser nulos_ utilizamos el [operador `?`](#operador-seguro-):
+
+```Kotlin
+fun Any?.toString(): String { 
+    if (this == null) return "null" 
+    /* Después de esta comprobación, el tipo receptor 
+    se castea a su versión no nullable.*/
+    return toString() 
+}
+```
+
+
+> [!NOTE]
+> Generalmente las funciones de extensión se declaran a nivel superior, aunque es posible declararlas como miembros de una clase. Cuando esto ocurre, existen **múltiples receptores implícitos** dentro de la clase. 
+> - _Receptor de despacho_: Instancia de la clase en la que se declara la extensión.
+> - _Receptor de extensión_: Instancia del tipo receptor del método de la extensión.
+
+Por ejemplo:
+
+```kotlin
+class Host(val hostname: String) {
+    fun printHostname() { print(hostname) }
+}
+
+class Connection(val host: Host, val port: Int) {
+    fun printPort() { print(port) }
+
+    fun Host.printConnectionString() {
+        printHostname()   // llama Host.printHostname() (Receptor de extensión)
+        print(":")
+        printPort()   // llama Connection.printPort() (Receptor de despacho)
+    }
+
+    fun connect() {
+        /*...*/
+        host.printConnectionString()   //  llama a la función de extensión
+    }
+}
+
+fun main() {
+    Connection(Host("kotl.in"), 443).connect()
+    //Host("kotl.in").printConnectionString()  
+    /*Provoca error puesto que la función de extensión 
+    no es visible fuera de Connection */
+}
+```
+
+Pueden existir conflictos entre los dos receptores, por lo que es importante tener en cuenta cómo se resuelven. El receptor de extensión **siempre** tiene prioridad. Para hacer referencia al miembro del receptor de despacho se utiliza la palabra reservada `this@`:
+
+```kotlin
+class Connection { 
+    fun Host.getConnectionString() { 
+        toString() // llama Host.toString() 
+        this@Connection.toString() // llama Connection.toString() 
+    } 
+}
+```
+
+>[!NOTE]
+>Además, las funciones de extensión miembro de una clase pueden ser declaradas como **`open`** y por tanto sobreescritas en las subclases. Una función de extensión declarada fuera de su tipo receptor _no puede acceder a sus miembros declarados como`private`o `protected`_.
+
+
+
+[^17]: _Functions | Kotlin_. (s. f.). Kotlin Help. [https://kotlinlang.org/docs/functions.html](https://kotlinlang.org/docs/functions.html)
+[^18]: Revelo, J. (2021, 25 agosto). Funciones en Kotlin - develou. _Develou_. [https://www.develou.com/funciones-en-kotlin/](https://www.develou.com/funciones-en-kotlin/)
+[^19]: _Extensions | Kotlin_. (s. f.). Kotlin Help. [https://kotlinlang.org/docs/extensions.html](https://kotlinlang.org/docs/extensions.html)
