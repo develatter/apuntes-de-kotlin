@@ -146,7 +146,6 @@ Para ver el tipo de dato de una variable, se puede usar la propiedad abstracta [
 >```Kotlin
 >variable::class.simpleName
 
-
 ## String
 
 Las cadenas en Kotlin se representan con el tipo **String** y son inmutables.
@@ -920,6 +919,150 @@ Los operadores de nulabilidad serán muy útiles dada la característica _null s
 
 [^10]: Operators and Special Symbols - Kotlin Programming Language. (s. f.). Kotlin. https://kotlinlang.org/docs/keyword-reference.html#operators-and-special-symbols
 [^11]: Equality - Kotlin Programming Language. (s. f.). Kotlin. https://kotlinlang.org/docs/equality.html
+
+---
+# Collections
+
+En Java estudiamos estructuras de datos como _List, Set o Map_. Kotlin también las contempla como colecciones[^20].
+
+La _Biblioteca Estándar de Kotlin_ proporciona herramientas completas para gestionar colecciones: grupos de elementos que son significativos para el problema que se está resolviendo.
+
+Hay que tener en cuenta que a la hora de declarar cualquier colección hay que indicar si queremos que sea mutable desde su misma declaración, ya que por defecto son inmutables. Normalmente una colección contiene elementos del mismo tipo.
+
+La librería estándar de Kotlin ofrece una serie de interfaces genéricas, clases y funciones para crear, rellenar y administrar colecciones independientemente de su tipo.
+
+La interfaz **`Collection<T>`** es la raíz de la jerarquía de colecciones. Proporciona operaciones típicas para la lectura de sus elementos. Las colecciones heredan de **`Iterable<T>`**, que proporciona operaciones para iterar sobre los elementos de la colección.
+
+Para poder tener operaciones de escritura, se debe usar o la interfaz **`MutableCollection<T>`** o las clases que la implementen.
+## Tipos de Colecciones
+
+### 1. List (Lista)
+
+`List<T>` es una **Colección** ordenada con acceso a elementos por índices, los cuales comienzan desde el 0. Los elementos pueden repetirse varias veces en la misma lista.
+#### Características Principales
+- Permite elementos duplicados
+- Se puede acceder a los elementos por su índice.
+- Tamaño variable, desde 0 a `lastIndex`.
+- Dos listas se consideran iguales si tienen el mismo tamaño y elementos estructuralmente idénticos en la misma posición.
+
+**Ejemplo de creación:**
+```kotlin
+val numeros = listOf("uno", "dos", "tres", "cuatro")
+println(numeros[2]) // Imprime "tres"
+```
+
+Métodos importantes:
+- `size()` : Devuelve el tamaño de la lista.
+- `contains(element : <E>)`: Evalúa si un elemento se encuentra en la lista.
+- `get(index: Int)`: Devuelve el elemento en la posición indicada.
+- `indexOf(element: <E>)`: Devuelve la posición de la primera ocurrencia del elemento en la lista.
+- `isEmpty()`:  Evalúa si la lista está vacía.
+- `subList(fromIndex: Int, toIndex: Int)`: Devuelve una vista de la lista desde la posición `fromIndex` hasta `toIndex`. Los cambios no estructurales en la vista se reflejan en la lista original.
+- `lastIndexOf(element: <E>)`: Devuelve la posición de la última ocurrencia del elemento en la lista.
+
+>[!IMPORTANT]
+>Una **lista mutable** _`MutableList<T>`_ es un tipo de lista que permite las operaciones de escritura de las listas. En Kotlin la implementación por defecto de una `MutableList`es **`ArrayList`**.
+>Los métodos más importantes de la lista mutable son:
+>- `add(element: <E>)`: Añade un elemento al final de la lista.
+>- `remove(element: <E>)`: Elimina la primera ocurrencia del elemento en la lista.
+>- `removeAt(index: Int)`: Elimina el elemento en la posición indicada.
+>- `clear()`: Elimina todos los elementos de la lista.
+>- `addAll(collection: Collection<E>)`: Añade todos los elementos de la colección a la lista.
+>- `removeAll(collection: Collection<E>)`: Elimina todos los elementos de la colección de la lista.)
+>- `set(index: Int, element: <E>)`: Reemplaza el elemento en la posición indicada. Es lo mismo que utilizar la notación `[]`.
+>- `shuffle()`: Baraja los elementos de la lista.
+
+```Kotlin
+fun main() {
+	val numbers = mutableListOf(1, 2, 3, 4)
+	numbers.add(5)
+	numbers.removeAt(1)
+	numbers[0] = 0
+	numbers.shuffle()
+	println(numbers.joinToString())
+}
+```
+[Prueba este código ▶](https://pl.kotl.in/ZwyfM5Ui8)
+
+### 2. Set (Conjunto)
+
+- Colección de elementos únicos
+- El orden generalmente no es significativo
+- Solo puede contener un elemento nulo
+- Dos sets son iguales si tienen los mismos elementos
+
+**Ejemplo:**
+```kotlin
+val numeros = setOf(1, 2, 3, 4)
+println(numeros.size) // Imprime 4
+println(numeros.contains(1)) // Imprime true
+```
+
+### 3. Map (Diccionario)
+
+- Colección de pares clave-valor
+- Claves únicas
+- Cada clave se mapea a exactamente un valor
+- Los valores pueden ser duplicados
+
+**Ejemplo:**
+```kotlin
+val mapaNumeros = mapOf("clave1" to 1, "clave2" to 2)
+println(mapaNumeros.keys) // Imprime las claves
+println(mapaNumeros.values) // Imprime los valores
+```
+
+## Colecciones Mutables vs No Mutables
+
+### Colecciones No Mutables
+- Solo operaciones de lectura
+- Interfaces de solo lectura
+- Seguras por defecto
+- Se pueden declarar con `val`
+
+### Colecciones Mutables
+- Permiten modificaciones
+- Operaciones de escritura: agregar, eliminar, actualizar
+- Se pueden declarar con `var` o `val`
+- Interfaces que extienden las interfaces de solo lectura
+
+**Ejemplo de colección mutable:**
+```kotlin
+val numeros = mutableListOf("uno", "dos", "tres")
+numeros.add("cuatro") // Modificación permitida
+```
+
+## Consideraciones Importantes
+
+- Las colecciones no mutables son covariantes
+- Las colecciones mutables no son covariantes
+- La biblioteca estándar ofrece interfaces y funciones genéricas
+- Ubicación: paquete `kotlin.collections`
+
+## Implementaciones por Defecto
+
+- `List`: `ArrayList`
+- `Set`: `LinkedHashSet`
+- `Map`: `LinkedHashMap`
+
+## ArrayDeque
+
+Una implementación de cola de doble extremo que permite:
+- Agregar/eliminar elementos al principio o final
+- Funciona como Pila y Cola
+- Implementado con un array redimensionable
+
+**Ejemplo:**
+```kotlin
+val cola = ArrayDeque(listOf(1, 2, 3))
+cola.addFirst(0)
+cola.addLast(4)
+println(cola) // [0, 1, 2, 3, 4]
+```
+
+
+
+[^20]: _Collections overview | Kotlin_. (s. f.). Kotlin Help. [https://kotlinlang.org/docs/collections-overview.html](https://kotlinlang.org/docs/collections-overview.html)
 
 ---
 # Null Safety
