@@ -1130,7 +1130,7 @@ for (i in 1..100) { ... }  // final cerrado: Incluye el 100
 
 for (i in 1..<100) { ... } // final abierto: No incluye el 100
 
-for (i in 1+1..<100) { ... } //final y principio cerrados
+for (i in 1+1..<100) { ... } //final y principio abiertos
 
 for (x in 2..10 step 2) { ... } //ascendente con paso 2
 
@@ -1444,7 +1444,9 @@ Las funciones en Kotlin tienen las siguientes partes:
 - **Tipo de retorno**: es el tipo de dato que la función devuelve como resultado.
 - **Cuerpo**: es el bloque de código que contiene las instrucciones que la función ejecuta.
 
-<img  src="https://i.imgur.com/tDHEmSr.png"/>
+<div align="center">
+    <img  src="https://i.imgur.com/tDHEmSr.png" width="50%" />
+</div>
 
 Habrás observado que _no hay un modificador de acceso_ . En Kotlin todas las funciones son _públicas por defecto_, a no ser que se le diga lo contrario.
 
@@ -1590,7 +1592,6 @@ fun foo(
 
 foo(baz = 1) // Se usa el valor por defecto bar = 0
 ```
-
 
 ## Ámbito de las funciones
 
@@ -1757,8 +1758,8 @@ class Connection {
 >[!NOTE]
 >Además, las funciones de extensión miembro de una clase pueden ser declaradas como **`open`** y por tanto sobreescritas en las subclases. Una función de extensión declarada fuera de su tipo receptor _no puede acceder a sus miembros declarados como`private`o `protected`_.
 
-
-
 [^17]: _Functions | Kotlin_. (s. f.). Kotlin Help. [https://kotlinlang.org/docs/functions.html](https://kotlinlang.org/docs/functions.html)
 [^18]: Revelo, J. (2021, 25 agosto). Funciones en Kotlin - develou. _Develou_. [https://www.develou.com/funciones-en-kotlin/](https://www.develou.com/funciones-en-kotlin/)
 [^19]: _Extensions | Kotlin_. (s. f.). Kotlin Help. [https://kotlinlang.org/docs/extensions.html](https://kotlinlang.org/docs/extensions.html)
+
+# POO - Programación Orientada a Objetos
