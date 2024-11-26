@@ -934,25 +934,27 @@ La librería estándar de Kotlin ofrece una serie de interfaces genéricas, clas
 La interfaz **`Collection<T>`** es la raíz de la jerarquía de colecciones. Proporciona operaciones típicas para la lectura de sus elementos. Las colecciones heredan de **`Iterable<T>`**, que proporciona operaciones para iterar sobre los elementos de la colección.
 
 Para poder tener operaciones de escritura, se debe usar o la interfaz **`MutableCollection<T>`** o las clases que la implementen.
+
+>[!IMPORTANT]
+>Los tipos de colecciones de *solo lectura* son *[covariantes](https://kotlinlang.org/docs/generics.html#variance)*. Esto significa que, si una clase `<T>` hereda de `<E>`, puedes usar un `List<T>` en cualquier lugar donde se requiera un `List<E>`. Los tipos de colección tienen la misma relación de subtipo que los tipos de elementos. 
+>
+>Los *mapas son covariantes en el tipo de valor*, pero no en el tipo de clave.
+>
+>Por otra parte, las *colecciones mutables no son covariantes*; de lo contrario, esto conduciría a errores en tiempo de ejecución. Si `MutableList<T>` fuera un subtipo de `MutableList<E>`, podrías insertar otros herederos de `E` en él, violando así su argumento de tipo `T`.
 ## Tipos de Colecciones
 
 ### 1. List (Lista)
 
-`List<T>` es una **Colección** ordenada con acceso a elementos por índices, los cuales comienzan desde el 0. Los elementos pueden repetirse varias veces en la misma lista.
-#### Características Principales
-- Permite elementos duplicados
-- Se puede acceder a los elementos por su índice.
-- Tamaño variable, desde 0 a `lastIndex`.
-- Dos listas se consideran iguales si tienen el mismo tamaño y elementos estructuralmente idénticos en la misma posición.
+`List<T>` es una **Colección** ordenada con acceso a elementos por índices, los cuales van desde el 0 hasta `lastIndex`. Los elementos pueden repetirse varias veces en la misma lista. Dos listas se consideran iguales si tienen el mismo tamaño y elementos estructuralmente idénticos en la misma posición.
 
-**Ejemplo de creación:**
 ```kotlin
 val numeros = listOf("uno", "dos", "tres", "cuatro")
 println(numeros[2]) // Imprime "tres"
 ```
+Propiedades:
+- `size`: Devuelve el número de elementos en la lista.
 
 Métodos importantes:
-- `size()` : Devuelve el tamaño de la lista.
 - `contains(element : <E>)`: Evalúa si un elemento se encuentra en la lista.
 - `get(index: Int)`: Devuelve el elemento en la posición indicada.
 - `indexOf(element: <E>)`: Devuelve la posición de la primera ocurrencia del elemento en la lista.
@@ -960,17 +962,17 @@ Métodos importantes:
 - `subList(fromIndex: Int, toIndex: Int)`: Devuelve una vista de la lista desde la posición `fromIndex` hasta `toIndex`. Los cambios no estructurales en la vista se reflejan en la lista original.
 - `lastIndexOf(element: <E>)`: Devuelve la posición de la última ocurrencia del elemento en la lista.
 
->[!IMPORTANT]
->Una **lista mutable** _`MutableList<T>`_ es un tipo de lista que permite las operaciones de escritura de las listas. En Kotlin la implementación por defecto de una `MutableList`es **`ArrayList`**.
->Los métodos más importantes de la lista mutable son:
->- `add(element: <E>)`: Añade un elemento al final de la lista.
->- `remove(element: <E>)`: Elimina la primera ocurrencia del elemento en la lista.
->- `removeAt(index: Int)`: Elimina el elemento en la posición indicada.
->- `clear()`: Elimina todos los elementos de la lista.
->- `addAll(collection: Collection<E>)`: Añade todos los elementos de la colección a la lista.
->- `removeAll(collection: Collection<E>)`: Elimina todos los elementos de la colección de la lista.)
->- `set(index: Int, element: <E>)`: Reemplaza el elemento en la posición indicada. Es lo mismo que utilizar la notación `[]`.
->- `shuffle()`: Baraja los elementos de la lista.
+#### MutableList
+Una **lista mutable** _`MutableList<T>`_ es un tipo de lista que permite las operaciones de escritura de las listas. En Kotlin la implementación por defecto de una `MutableList`es **`ArrayList`**.
+Los métodos más importantes de la lista mutable son:
+- `add(element: <E>)`: Añade un elemento al final de la lista.
+- `remove(element: <E>)`: Elimina la primera ocurrencia del elemento en la lista.
+- `removeAt(index: Int)`: Elimina el elemento en la posición indicada.
+- `clear()`: Elimina todos los elementos de la lista.
+- `addAll(collection: Collection<E>)`: Añade todos los elementos de la colección a la lista.
+- `removeAll(collection: Collection<E>)`: Elimina todos los elementos de la colección de la lista.)
+- `set(index: Int, element: <E>)`: Reemplaza el elemento en la posición indicada. Es lo mismo que utilizar la notación `[]`.
+- `shuffle()`: Baraja los elementos de la lista.
 
 ```Kotlin
 fun main() {
@@ -986,73 +988,96 @@ fun main() {
 
 ### 2. Set (Conjunto)
 
-- Colección de elementos únicos
-- El orden generalmente no es significativo
-- Solo puede contener un elemento nulo
-- Dos sets son iguales si tienen los mismos elementos
+Un conjunto o [`Set`](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/) es una colección de elementos únicos en la que el orden generalmente no es significativo. Representa la idea matemática de un conjunto. Dos sets son iguales si tienen los mismos elementos.
 
-**Ejemplo:**
+>[!NOTE]
+>Como no se pueden repetir objetos, solamente puede contener un elemento nulo.
+
+Propiedades:
+- `size`: Devuelve el número de elementos en el conjunto.
+
+Métodos importantes:
+- `contains(element: <E>)`: Evalúa si un elemento se encuentra en el conjunto.
+- `containsAll(elements: Collection<E>)`: Evalúa si todos los elementos de la colección están en el conjunto.
+- `isEmpty()`: Evalúa si el conjunto está vacío.
+
+#### MutableSet
+`MutableSet` es una interfaz de conjunto que permite operaciones de escritura, extendiendo las capacidades de `MutableCollection`. 
+
+La implementación por defecto del conjunto mutable, `LinkedHashSet`, preserva el orden de inserción de los elementos. Las funciones que dependen del orden (como `first()` o `last()`) devuelven resultados predecibles.
+
 ```kotlin
 val numeros = setOf(1, 2, 3, 4)
-println(numeros.size) // Imprime 4
-println(numeros.contains(1)) // Imprime true
+val numerosInversos = setOf(4, 3, 2, 1)
+
+// Estos ejemplos mostrarán comportamientos diferentes según la implementación
+println(numeros.first() == numerosInversos.first())
+println(numeros.first() == numerosInversos.last())
 ```
 
+Una implementación alternativa, `HashSet`, no garantiza ningún orden específico, pero requiere menos memoria para almacenar el mismo número de elementos.
+
+- `add(element: <E>)`: Añade un elemento al conjunto.
+- `addAll(collection: Collection<E>)`: Añade todos los elementos de la colección al conjunto.
+- `remove(element: <E>)`: Elimina un elemento del conjunto.
+- `removeAll(collection: Collection<E>)`: Elimina todos los elementos de la colección del conjunto.
+- `clear()`: Elimina todos los elementos del conjunto.
+- `retainAll(collection: Collection<E>)`: Elimina todos los elementos del conjunto que no están en la colección introducida como argumento.
 ### 3. Map (Diccionario)
+Aunque no hereda de la interfaz `Collection`, `Map<K,V>`forma parte de los tipos de colección de Kotlin. La interfaz `Map` funciona mediante pares clave-valor, donde cada clave es única y se mapea a un único valor, que puede estar repetido. Dos mapas que contengan los mismos pares clave-valor son iguales independientemente de su orden.
 
-- Colección de pares clave-valor
-- Claves únicas
-- Cada clave se mapea a exactamente un valor
-- Los valores pueden ser duplicados
-
-**Ejemplo:**
 ```kotlin
 val mapaNumeros = mapOf("clave1" to 1, "clave2" to 2)
 println(mapaNumeros.keys) // Imprime las claves
 println(mapaNumeros.values) // Imprime los valores
 ```
+Propiedades:
+- `size`: Devuelve el número de pares clave-valor en el mapa.
+- `keys`: Devuelve un conjunto de las claves usadas en el mapa.
+- `values`: Devuelve una colección de los valores del mapa.
+- `entries`: Devuelve un set con todos los pares clave-valor del mapa. Este set es de tipo `Map.Entry<K, V>`, siendo `Entry`una interfaz anidada que representa uno de estos pares.
 
-## Colecciones Mutables vs No Mutables
+>[!TIP]
+>Puedes consultar la implementación de todas estas clases en la [documentación oficial](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/). Por ejemplo, esta es la implementación de `Map.Entry<K,V>`:
+>
+>```Kotlin
+>public interface Entry<out K, out V> {
+>   /**
+>    * Returns the key of this key/value pair.
+>    */
+>    public val key: K
+>  
+>   /**
+>    * Returns the value of this key/value pair.
+>    */
+>    public val value: V
+>}
+>```
 
-### Colecciones No Mutables
-- Solo operaciones de lectura
-- Interfaces de solo lectura
-- Seguras por defecto
-- Se pueden declarar con `val`
+Métodos importantes:
+- `size()`: Devuelve el tamaño del mapa.
+- `containsKey(key: <K>)`: Evalúa si una clave se encuentra en el mapa.
+- `containsValue(value: <V>)`: Evalúa si un valor se encuentra en el mapa.
+- `isEmpty()`: Evalúa si el mapa está vacío.
+- `get(key: <K>)`: Devuelve el valor asociado a la clave indicada.
+- `getOrDefault(key: <K>, defaultValue: <V>)`: Devuelve el valor asociado a la clave indicada o un valor por defecto si no existe.
+#### MutableMap
+`MutableMap` es una interfaz de mapa que permite operaciones de escritura, extendiendo las capacidades de `Map`. La implementación por defecto de `MutableMap` es `LinkedHashMap`, que preserva el orden de inserción de los elementos. La implementación alternativa `HashMap`sin embargo no toma en consideración el orden de los elementos.
+- `put(key: <K>, value: <V>)`: Añade un par clave-valor al mapa. Es lo mismo que utilizar la notación `[]`.
+- `putAll(from: Map<out K, V>)`: Añade todos los pares clave-valor de otro mapa al mapa.
+- `remove(key: <K>)`: Elimina un par clave-valor del mapa.
+- `clear()`: Elimina todos los pares clave-valor del mapa.
 
-### Colecciones Mutables
-- Permiten modificaciones
-- Operaciones de escritura: agregar, eliminar, actualizar
-- Se pueden declarar con `var` o `val`
-- Interfaces que extienden las interfaces de solo lectura
-
-**Ejemplo de colección mutable:**
-```kotlin
-val numeros = mutableListOf("uno", "dos", "tres")
-numeros.add("cuatro") // Modificación permitida
+```Kotlin
+val mapaNumeros = mutableMapOf("uno" to 1, "dos" to 2)
+mapaNumeros["tres"] = 3 // Añade un nuevo par clave-valor
+mapaNumeros.put("cuatro", 4) // Añade un nuevo par clave-valor
+mapaNumeros.remove("uno") //Borra el elemento con clave "uno"
 ```
 
-## Consideraciones Importantes
-
-- Las colecciones no mutables son covariantes
-- Las colecciones mutables no son covariantes
-- La biblioteca estándar ofrece interfaces y funciones genéricas
-- Ubicación: paquete `kotlin.collections`
-
-## Implementaciones por Defecto
-
-- `List`: `ArrayList`
-- `Set`: `LinkedHashSet`
-- `Map`: `LinkedHashMap`
-
 ## ArrayDeque
+`ArrayDeque`es una implementación de cola de doble extremo que permite agregar o eliminar elementos al principio o final. Por tanto, puede funcionar como Pila y Cola. Es una estructura *mutable*.
 
-Una implementación de cola de doble extremo que permite:
-- Agregar/eliminar elementos al principio o final
-- Funciona como Pila y Cola
-- Implementado con un array redimensionable
-
-**Ejemplo:**
 ```kotlin
 val cola = ArrayDeque(listOf(1, 2, 3))
 cola.addFirst(0)
@@ -1060,7 +1085,19 @@ cola.addLast(4)
 println(cola) // [0, 1, 2, 3, 4]
 ```
 
+Propiedades:
+- `size`: El tamaño de la colección.
+- `modCount`: El número de modificaciones realizadas en la cola a nivel estructural.
 
+Métodos importantes:
+- `add(element: <E>)`: Añade un elemento al final de la cola.
+- `add(index: Int, element: <E>)`: Añade un elemento en la posición indicada.
+- `addAll(elements: Collection<E>)`: Añade todos los elementos de la colección a la cola.
+- `addAll(index: Int, elements: Collection<E>)`: Añade todos los elementos de la colección en la posición indicada.
+- `addFirst(element: <E>)`: Añade un elemento al principio de la cola.
+- `addLast(element: <E>)`: Añade un elemento al final de la cola.
+- `clear()`: Elimina todos los elementos de la colección.
+Puedes consultar el resto de métodos [a través de este enlace](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-array-deque/)
 
 [^20]: _Collections overview | Kotlin_. (s. f.). Kotlin Help. [https://kotlinlang.org/docs/collections-overview.html](https://kotlinlang.org/docs/collections-overview.html)
 
@@ -1659,7 +1696,7 @@ fun printMessage(message: String, count: Int = 1) {
     }
 }
 ```
-[Prueba este código ▶](https://pl.kotl.in/1fs1-TgkY)]
+[Prueba este código ▶](https://pl.kotl.in/1fs1-TgkY)
 
 ### Herencia y valores por defecto
 
@@ -1901,8 +1938,932 @@ class Connection {
 >[!NOTE]
 >Además, las funciones de extensión miembro de una clase pueden ser declaradas como **`open`** y por tanto sobreescritas en las subclases. Una función de extensión declarada fuera de su tipo receptor _no puede acceder a sus miembros declarados como`private`o `protected`_.
 
+Las funciones se desarrollan más [en su apartado correspondiente](#conceptos-avanzados)
+
 [^17]: _Functions | Kotlin_. (s. f.). Kotlin Help. [https://kotlinlang.org/docs/functions.html](https://kotlinlang.org/docs/functions.html)
 [^18]: Revelo, J. (2021, 25 agosto). Funciones en Kotlin - develou. _Develou_. [https://www.develou.com/funciones-en-kotlin/](https://www.develou.com/funciones-en-kotlin/)
 [^19]: _Extensions | Kotlin_. (s. f.). Kotlin Help. [https://kotlinlang.org/docs/extensions.html](https://kotlinlang.org/docs/extensions.html)
 
-# POO - Programación Orientada a Objetos
+# POO - Clases y objetos
+
+Kotlin, al igual que Java, está orientado a objetos y por tanto permite encapsular en objetos tanto su estado (valor de las propiedades) como su funcionalidad (métodos).
+
+>[!NOTE]
+>Cuando se crea una clase en Kotlin por defecto será **public** y **final**. Para que se pueda heredar de ella tendremos que declararlo explícitamente con el modificador **`open`**.
+
+Podemos crear una clase de la siguiente forma:
+```Kotlin
+//Fichero Persona.kt
+class Persona {
+    var soltera = true
+      
+    fun casarse() {
+        soltera = false
+    }
+}
+```
+
+E instanciarla de la siguiente manera:
+```Kotlin
+val anselmo = Persona()
+```
+
+En el ejemplo vemos cómo se ha usado el constructor por defecto. Además, a diferencia de Java, _no se usa la palabra reservada `new`_. Y, por supuesto, se infiere que `anselmo` será de tipo `Persona`.
+## Conceptos básicos
+### Constructores
+Podemos crear un constructor en la misma cabecera de la clase, de forma similar a como se definen los parámetros de una función. A este constructor se le conoce como _constructor primario_:
+```Kotlin
+//Fichero Persona.kt
+class Persona(var nombre: String = "", //constructor primario
+              var dni: String? = null,
+              var edad: Int = 0) {
+              
+    var soltera = true
+    
+    fun casarse() {
+        this.soltera = false
+    }
+}
+```
+
+En el caso anterior decimos que la clase Persona tiene los atributos: `nombre`, `dni`, `edad` y `soltera`. Y todos ellos son públicos por defecto. También serán mutables, puesto que los hemos declarado usando la palabra reservada **`var`**.
+
+
+>[!WARNING]
+>Si `nombre`, `dni` y `edad` no tienen el modificador `var`/`val`, no serían visibles ni siquiera dentro de la propia clase. En la sección de [Bloques de inicialización](#bloques-de-inicializacion) veremos la utilidad de estos parámetros.
+
+Para instanciar un objeto a partir de la clase anterior:
+```Kotlin
+//Fichero Main.kt
+val persona = Persona("Anselmo", "12345678A", 33)
+```
+
+Se puede observar que cada propiedad tiene un _valor por defecto_. Aquellos que lo tengan se conocen como _propiedades o parámetros opcionales_ ya que, si se crea un objeto sin pasar valores (constructor por defecto), se le asignan esos valores por defecto.
+
+Si necesitamos otros constructores (como ocurría en Java), conocidos como constructores secundarios, podemos definirlos con la palabra reservada **`constructor`** de la siguiente forma:
+```Kotlin
+//Fichero Persona.kt
+class Persona(var nombre: String = "",
+              var dni: String? = null,
+              var edad: Int = 0) {
+
+    var soltera = true
+    constructor(nombre: String,
+                dni: String,
+                edad: Int,
+                soltera: Boolean
+    ) : this(nombre, dni, edad) { //Referencia al constructor primario
+        this.soltera = soltera
+    }
+    
+    fun casarse() {
+        this.soltera = false
+    }
+}
+```
+
+Así, el constructor primario inicializa los atributos `nombre`, `dni`y `edad` usando el constructor primario (`this(nombre, dni, edad)`) mientras que el constructor secundario inicializa, además de los anteriores, el atributo `soltera`.
+
+Para instanciar objetos usando todos los constructores posibles:
+
+```Kotlin
+val maria = Persona("María Pérez", "00000000Z", 45)
+
+val pelayo = Persona("Pelayo López", "111111111A", 45, false)
+
+val anonimo = Persona()
+ ```
+  
+### Getters y Setters
+
+Podríamos implementar setters y getters como se hacía en Java. Así, para el ejemplo anterior:
+```Kotlin
+class Persona...    
+    // getters
+    fun getNombre(): String { return this.nombre }
+    fun getDni(): String { return this.dni }
+    fun getEdad(): Int { return this.edad }
+    fun getSoltera(): Boolean { return this.soltera }
+  
+    // setters
+    fun setNombre(nuevoNombre: String) { this.nombre = nuevoNombre }
+    fun setDni(nuevoDni: String) { this.dni = nuevoDni }
+    fun setEdad(nuevaEdad: Int) { this.edad = nuevaEdad }
+    fun setSoltera(soltera: Boolean) { this.soltera = soltera }
+
+. . .
+```
+
+Y esto funciona correctamente, pero no son los getters y setters reales.
+
+Por defecto, las propiedades en Kotlin no necesitan setters y getters ya que son públicas. Es decir, esto:
+```Kotlin
+var nombre: String = "Pepe"
+```
+
+sería equivalente a esto otro:
+
+```Kotlin
+var nombre: String = "Pepe"
+    get() {
+        return field
+    }
+    
+    set(value) {
+        field = value
+    }
+```
+
+Donde **`field`** hace referencia a la propiedad nombre y **`value`** se refiere al valor asignado.
+
+Cada propiedad que definimos está referenciada por un campo al que solo se puede acceder dentro de sus métodos **`get()` y `set()`** mediante la palabra reservada `field`. Ésta se utiliza para acceder o modificar el valor de la propiedad. Esto nos permite definir una lógica personalizada dentro de los métodos `get()` y `set()`:
+
+  ```Kotlin
+var nota: Int = 4
+    get() {
+        if (field < 5)
+            println("Suspenso.")
+            return field
+    }
+    
+    set(value) {
+        field = when{
+            value > 10 -> 10
+            value < 0 -> 0
+            else -> value
+        }
+    } 
+```
+
+Podemos modificar el acceso de las propiedades. Por ejemplo, para el ejemplo anterior, si ponemos el set como privado:
+
+```Kotlin
+private set(value) { 
+    . . . 
+}
+```
+
+Permitimos que se vea la propiedad desde fuera de la clase, pero el _`set` sólo podrá utilizarse dentro del objeto_.
+
+En el siguiente ejemplo se puede ver cómo las propiedades `x` e `y` pueden modificarse sólo desde dentro de la clase `Plane`. En este caso no tendremos una condición dentro del setter, por lo que podremos omitir el cuerpo y el parámetro `value`, dejando la declaración como `private set`:
+
+```Kotlin
+class Plane {
+    var x: Int = 0 
+        private set
+    var y: Int = 0
+        private set
+        
+    fun moveLeft() {
+        x -= if (x == 0) 0 else 1
+    }
+
+    fun moveRight() {
+        x += if (x == 300) 0 else 1
+    }
+
+    fun moveUp() {
+        y -= if (y == 0) 0 else 1
+    }
+
+    fun moveDown() {
+        y += if (y == 300) 0 else 1
+    }
+}
+```
+### Bloques de inicialización
+Llegados a este punto podemos encontrar sentido a un constructor primario como este:
+
+```Kotlin
+//Fichero Persona.kt
+class Persona(
+    nombre: String = "",
+    dni: String? = null,
+    edad: Int = 0
+) {
+. . .
+}
+```
+
+Los parámetros del constructor sin un modificador `var`/`val` *no pueden ser usados ni fuera ni dentro de la clase*. Son simplemente parámetros locales del constructor.
+
+Los bloques `init` sirven para realizar lógicas de inicialización complejas que no se pueden hacer directamente en la declaración de propiedades. Algunos ejemplos son validaciones, cálculos o lógicas condicionales que requieren más de una línea. Puede haber varios bloques `init`, que se ejecutarán por orden.
+
+Antes de las versiones más recientes de Kotlin, era común usar bloques `init` para inicializar propiedades:
+
+```Kotlin
+class Persona(
+    nombre: String = "",
+    dni: String? = null,
+    edad: Int = 0
+) {
+    var nombre: String
+    var dni: String?
+    var edad: Int
+    var soltera: Boolean
+    
+    init {
+        this.nombre = nombre
+        this.dni = dni ?: ""
+        this.edad = if (edad < 0) 0 else edad
+        this.soltera = false
+    }
+. . .
+}
+```
+
+En la actualidad, Kotlin permite inicializar directamente las propiedades en su declaración, lo que simplifica el código:
+
+```Kotlin
+class Persona(
+    nombre: String = "",
+    dni: String? = null,
+    edad: Int = 0
+) {
+    var nombre: String = nombre
+    var dni: String? = dni
+    var edad: Int = if (edad < 0) 0 else edad
+    var soltera: Boolean = false 
+}
+```
+
+>[!TIP]
+>Utiliza los bloques `init` siguen siendo útiles para lógicas de inicialización más complejas que no se pueden resolver en una línea.
+
+## Herencia
+
+En Kotlin las clases son finales por defecto. Es decir, no se puede heredar de ellas. Para evitar esto, hay que indicar que la clase sea **`open`**:
+
+```Kotlin
+open class Persona(
+            var nombre:String,
+            var dni:String,
+            var edad:Int
+            )
+
+class Empleado(nombre:String,
+              dni:String,
+              edad:Int,
+              var sueldo: Float): Persona(nombre, dni, edad) 
+
+fun main() {
+    val persona1 = Persona("Anselmo", "88888888X", 32)
+    val empleado1 = Empleado("Pelayo", "11111111A", 41, 1500f)
+    println(persona1.nombre)
+    println(empleado1.nombre)
+}
+
+//—------------------------------------------
+//~$ Anselmo
+//~$ Pelayo
+```
+[Prueba este código ▶](https://pl.kotl.in/M2Tm9IOMr)
+
+Como ya hemos comentado antes, no es necesario hacer getters o setters, siempre y cuando en el constructor primario se haya escrito var o val antes de las propiedades de la clase, esto también incluye las clases que han heredado.
+
+Para más información consulta los siguientes enlaces:
+- [https://www.develou.com/herencia-en-kotlin/](https://www.develou.com/herencia-en-kotlin/
+- [https://kotlinlang.org/docs/inheritance.html](https://kotlinlang.org/docs/inheritance.html)
+
+## Interfaces
+
+En Kotlin, las interfaces sirven para definir comportamientos comunes que pueden compartirse o implementarse en varias clases que no necesariamente tienen que estar relacionadas las unas con las otras.
+### Definición de interfaces
+Para definir una interfaz en Kotlin, tendremos que hacer uso de la palabra clave `interface`. Una interfaz permite declarar métodos y propiedades. Las clases que implementan dicha interfaz deben cumplir con lo definido en la interfaz ya sea implementando el método o propiedad tal y como se definió en la interfaz, o sobreescribiendo para cambiar su comportamiento.
+
+En Kotlin, una interfaz puede contener:
+- **Métodos abstractos**: métodos que no tienen implementación. Las clases que implementen el interfaz deben codificar dichos métodos para definir su comportamiento.
+- **Métodos con implementación**: estos métodos ya tienen un comportamiento predeterminado, según la clase en la que se implemente la interfaz se puede sobreescribir el método o usar el comportamiento predeterminado.
+
+Ejemplo de una interfaz con un método abstracto y un método con implementación:
+```Kotlin
+interface Coche {
+    fun Arrancar() //Método abstracto
+    fun Parar() { //Método con implementación
+        println("El coche se detiene.")
+    }
+}
+```
+
+- **Propiedades abstractas**: una propiedad abstracta no tiene un estado real (no almacena un valor), sino que la clase que implemente la interfaz debe proporcionarle un valor.
+- **Propiedad con implementación**: una propiedad con implementación es simplemente una propiedad que tiene un valor predeterminado que puede ser modificado en la clase en la que se implemente la interfaz.
+- 
+Ejemplo de una interfaz con una propiedad abstracta y una propiedad con implementación:
+```Kotlin
+interface ComportamientoEducado {
+    var nombre: String       // Propiedad abstracta
+    val edad: Int get() = 19 // Propiedad con implementación 
+    
+    fun saludar() {
+        println(
+        "Hola, soy $nombre y tengo $edad años")
+    }
+}
+```
+
+### Implementación de una interfaz en una clase
+Como ya hemos mencionado, si una clase implementa una interfaz, esta clase debe de definir los métodos y las propiedades abstractas que se han declarado en la interfaz.
+
+Por ejemplo:
+```Kotlin
+/**
+ * Indicamos que la propiedad abstracta nombre debe de ser 
+ * proporcionada cuando se cree un objeto Maestro
+ */
+class Maestro(override val nombre: String): ComportamientoEducado {
+
+   /** 
+    * Sobreescribimos el método saludar para que nos dé la 
+    * salida que deseamos
+    */
+    override fun saludar() {
+        println("Hola soy $nombre, tengo $edad años y soy maestro.")
+    }
+}
+```
+
+Si observamos la clase anterior, podremos ver que para indicar que implementaremos la interfaz `ComportamientoEducado`, debemos hacerlo en la cabecera de la clase:
+
+```Kotlin
+class Maestro : ComportamientoEducado { . . . }
+```
+
+Pero como en la interfaz `ComportamientoEducado` hemos declarado la propiedad `nombre`, que es abstracta, para asegurar que se le da un valor debemos incluirla en el constructor primario del objeto `Maestro`, indicando con la palabra reservada **`override`** que sobreescribe la propiedad `nombre` de la interfaz:
+
+```Kotlin
+class Maestro(override val nombre: String) : Persona {. . .}
+```
+
+### Implementación de múltiples interfaces en una clase
+En Kotlin, una clase puede implementar _múltiples interfaces_, lo que podría llegar a suponer un problema si dichas interfaces tuvieran métodos con el mismo nombre. Kotlin necesitaría una forma de saber a cuál de estos métodos tratamos de referirnos.
+
+La responsable de resolver el conflicto es la clase en la que se implementan las interfaces, indicando explícitamente qué método usará y a qué interfaz pertenece el método en cuestión.
+
+```Kotlin
+// Declaramos la interfaz Caminante 
+interface Caminante {
+    fun moverse() {
+        println("Caminando")
+    }
+}
+
+// Declaramos la interfaz Nadador 
+interface Nadador {
+    fun moverse() {
+        println("Nadando")
+    }
+}
+
+// Implementamos las interfaces Caminante y Nadador 
+class Triatleta : Caminante, Nadador {
+    override fun moverse() {
+       /*Indicamos que usaremos el método moverse() de la 
+        * interfaz Caminante 
+        */
+        super<Caminante>.moverse()
+    }
+}
+```
+## Data classes
+Las clases de datos son usadas para guardar información. Aquí tenemos un ejemplo de cómo nombrar una Data Class:
+
+```Kotlin
+data class Persona (val nombre: String, var edad: Int)
+```
+
+El compilador automáticamente, derivará los siguientes métodos teniendo en cuenta las propiedades del constructor primario:
+
+- `equals()`: Dos objetos serán iguales si el contenido significativo de los mismos también lo son, esto es que sus valores son iguales.
+- `hashCode()`: Devuelve un número entero que representa el objeto.
+- `toString()`: Devuelve una cadena que representa el objeto.
+- `componentN()`: Es una función usada para obtener la información de la propiedad en orden de declaración, en el caso del ejemplo de arriba el `component1()` de esa clase `Persona` es el `nombre` que se le haya asignado al crear el objeto. Se utiliza en la declaraciones destructuradas. 
+- `copy()`: usado para crear la copia de un objeto ya creado, además entre paréntesis podremos cambiar alguno de los datos.
+
+```Kotlin
+val user = User("Jane", 35) 
+val (name, age) = user //Asignación destructurada
+println("$name, $age años") // Jane, 35 años
+```
+
+A continuación un ejemplo de `data class`:
+
+```Kotlin
+data class Persona(val nombre:String, var edad:Int)
+
+fun main(){
+    val persona1 = Persona("Anselmo", 30)
+    //toString()
+    println(persona1.toString())
+    
+    //componentN()
+    println(persona1.component1())
+    
+    println(persona1.component2())
+    
+    //copy()
+    //Vamos a cambiar el nombre, pero dejaremos la misma edad
+    val persona2 = persona1.copy(nombre = "Pepe")
+    println(persona2.component1())
+    
+    println(persona2.component2())
+    val persona3 = Persona("Anselmo", 30)
+    //Usamos el equals
+    println(persona1.equals(persona2))
+    println(persona1.equals(persona3))
+}
+```
+[Prueba este código ▶](https://pl.kotl.in/BAUoJ0l4G)
+
+
+>[!IMPORTANT]
+>Es importante remarcar que para garantizar la coherencia y el comportamiento significativo del código generado, se tienen que cumplir los siguientes requisitos:
+>- El constructor primario tiene que tener al menos un parámetro
+>- Todos los parámetros del constructor primario tienen que ser precedidos por var o val.
+>- Las clases de datos _no pueden ser abstractas, abiertas, selladas o internas_.
+
+Podremos excluir propiedades de este tipo de clases. El compilador usará solo aquellos atributos que se encuentren en el constructor principal para crear los métodos de utilidad vistos y dichos anteriormente.
+
+```Kotlin
+data class Persona(val nombre:String, var edad:Int){
+    var colorPelo: String? = null //No incluido en los métodos
+}
+
+fun main(){
+    var perso1 = Persona("Juan", 21)
+    var perso2 = perso1.copy()
+    
+    perso1.colorPelo = "Verde"
+    perso2.colorPelo = "Amarillo"
+    println(perso1.equals(perso2))
+}
+//—-------------------------------------
+//~$ true
+```
+[Prueba este código ▶](https://pl.kotl.in/fboZK7wiH)
+
+Como puedes observar, el valor de `colorPelo` no afecta a la igualdad entre los dos objetos, porque no se tiene en cuenta en el método `equals()`.
+
+Este tipo de clases se suelen usar para crear modelos de almacenamiento sin tener que escribir código repetitivo. Una `data class`es más fácil y rápida de manipular y comparar.
+
+Para más información consulta los siguientes artículos:
+- [https://kotlinlang.org/docs/data-classes.html](https://kotlinlang.org/docs/data-classes.html
+- [https://www.develou.com/data-classes-en-kotlin/](https://www.develou.com/data-classes-en-kotlin/)
+## Enum  
+-En construcción-
+
+- [https://kotlinlang.org/docs/enum-classes.html](https://kotlinlang.org/docs/enum-classes.html)
+- [https://www.develou.com/clases-enum-en-kotlin/](https://www.develou.com/clases-enum-en-kotlin/)
+# Conceptos avanzados
+
+Kotlin ofrece algunas opciones para mejorar y fortalecer nuestro código. Veamos algunas.
+## Funciones de extensión
+
+Las funciones de extensión en Kotlin permiten agregar nuevas funcionalidades a clases existentes sin modificar su código fuente. Veámoslo con un ejemplo.  Aunque las funcionalidades pueden ser innecesarias, si son ilustrativas y ayudan a entender en qué consisten estas funciones.
+
+Supongamos que necesitamos un par de funcionalidades específicas para las cadenas de texto en nuestra aplicación: una eliminará todos los espacios en blanco y la otra pondrá la primera letra de la cadena en mayúscula. Para ello crearemos estas dos funciones o métodos en alguna de las clases:
+
+```Kotlin 
+fun String.sinEspacios(): String {
+    return this.replace(" ", "")
+}
+
+fun String.primeraMayuscula(): String {
+    return this.replaceFirstChar{ it.uppercase() }
+}
+
+fun String.esPalindromo(): Boolean {
+    return this == this.reversed()
+}
+```
+
+De esta forma hemos añadido a la clase `String` las funcionalidades `sinEspacios()` y `primeraMayuscula()` y las puedo usar con cualquier objeto `String`:
+
+```Kotlin
+val quiniela = "          1  x         2 ".sinEspacios()
+//quiniela = "1x2"
+. . .
+var nombre = "pepe".primeraMayuscula() 
+// Pepe
+. . .
+var palindromo = "opo".esPalindromo() 
+// true
+```
+  
+Veamos más ejemplos con otras clases conocidas:
+
+```Kotlin
+//Crea un rango desde el nº hasta el final indicado:
+fun Int.rangeTo(hasta: Int): IntRange {
+    return this..hasta
+}
+
+//Repite una cadena de texto tantas veces como indique el entero:
+fun Int.repetir(cadena: String): String {
+    return cadena.repeat(this)
+}
+
+//Indica si un nº es par
+fun Int.esPar(): Boolean {
+    return this % 2 == 0
+}
+
+//Invierte el valor booleano
+fun Boolean.not(): Boolean {
+    return !this
+}
+
+//—--------------------------
+// Cómo se usan:
+
+for (i in 3.rangeTo(12) {
+    . . .
+}
+. . .
+
+println(3.repetir("textoRepetido "))
+//Imprime: textoRepetido textoRepetido textoRepetido 
+. . .
+println(7.esPar())
+//false
+. . .
+
+val esMenor = false
+
+println(esMenor) //false
+
+println(esMenor.not()) //true
+```
+
+>[!TIP]
+>Puedes ver más ejemplos de funciones de extensión [aquí](https://cursokotlin.com/funciones-de-extension-en-kotlin-capitulo-36/)[^20]
+  
+[^20]:Aris. (2023, 15 enero). _Funciones de extensión en Kotlin – Capítulo 36_. Curso Kotlin Para ANDROID. https://cursokotlin.com/funciones-de-extension-en-kotlin-capitulo-36/
+
+## Funciones de orden superior
+Son funciones que cumplen alguna de estas condiciones:
+- Reciben otras funciones como parámetros.
+- Devuelven una función como resultado.
+
+En esencia, las funciones de orden superior tratan a las funciones como ciudadanos de primera clase, permitiéndote manipularlas y pasarlas como datos.
+Existen algunas funciones predefinidas, como:
+
+### `map()`
+Aplica una transformación a cada elemento de una colección y devuelve una nueva lista con los resultados.
+
+```Kotlin
+val numeros= listOf(1, 2, 3, 4)
+val numerosDobles = numeros.map { it * 2 } // [2, 4, 6, 8]
+```
+
+En este ejemplo, `map()` toma una función como argumento (en este caso, `{ it * 2 }`) y la aplica a cada elemento de la lista.
+
+### `filter()`
+Filtra los elementos de una colección según una condición.
+
+```Kotlin
+val numeros = listOf(1, 2, 3, 4, 5)
+val numerosPares = numeros.filter { it % 2 == 0 } // [2, 4]
+```
+
+Aquí, `filter()` toma una función que devuelve un booleano y filtra los elementos que cumplen la condición.
+
+### `reduce()`  
+Combina todos los elementos de una colección en un único valor.
+
+```Kotlin
+val numeros = listOf(1, 2, 3, 4, 5)
+val suma = numeros.reduce { acc, element -> acc + element }
+println(suma) // Imprime: 15
+```
+
+`reduce()` toma una función como argumento que tiene dos parámetros:
+- `acc`: el valor acumulado hasta el momento.
+- `element`: el elemento actual de la lista.
+La función que pasamos a `reduce()` en el ejemplo suma el elemento actual al valor acumulado.
+La operación de reducir comienza con el primer elemento como valor acumulado y luego aplica la función a cada elemento sucesivo.
+
+### `forEach()`  
+Ejecuta una acción para cada elemento de una colección.
+
+```Kotlin
+val nombres = listOf("Ana", "Pedro", "Laura", "David")
+
+nombres.forEach { nombre ->
+    println(nombre)
+}
+```
+
+El `forEach()` recorre la lista de nombres y los imprime línea a línea. El argumento de la función lambda es el elemento actual de la colección.
+### Funciones como parámetros
+También podemos definir funciones propias. Por ejemplo:
+
+```Kotlin
+fun calcular(
+            num1: Int,
+            num2: Int,
+            operacion: (Int, Int)->Int
+            ): Int {
+    return operacion(num1, num2)
+}
+```
+
+El último parámetro de la función calcular es una función llamada `operacion` que recibe dos enteros y devuelve un entero. Podremos introducir cualquier función que admita dos enteros como parámetros y devuelva un entero como resultado, sea la que sea.
+
+Ahora definimos algunas funciones que cumplan con dicha cabecera:
+
+```Kotlin
+fun sumar(a: Int, b: Int): Int { return a + b }
+fun restar(a: Int, b: Int) = a - b
+fun multiplicar(a: Int, b: Int): Int { return a * b }
+fun dividir(a: Int, b: Int) = if (b != 0) a/b else 0
+```
+
+Todas las funciones devuelven el resultado, aunque el `return` se exprese de distintas formas.
+Veamos cómo pasar cualquiera de estas funciones como parámetro en la función `calcular`:
+
+```Kotlin
+val suma = calcular(4, 5, ::sumar)
+val resta = calcular(4, 5, ::restar)
+val producto = calcular(4, 5, ::multiplicar)
+val division = calcular(4, 5, ::dividir)
+```
+
+Veamos otro ejemplo, esta vez dentro de la clase `Persona` que hemos definido anteriormente. Añadimos en ella el siguiente método:
+
+```Kotlin
+fun puedeConducir(conducir: (Int) -> Boolean): Boolean {
+    return conducir(edad)
+}
+```
+
+Ahora imaginemos que definimos fuera de la clase varias funciones que cumplan con esa cabecera (admite un entero como parámetro y devuelve un valor lógico):
+
+```Kotlin
+fun enFrancia(edad: Int): Boolean {
+    return edad >= 19
+}
+
+fun enEspana(edad: Int): Boolean {
+    return edad >= 18
+}
+
+fun enIslandia(edad: Int): Boolean {
+    return edad >= 16
+}  
+
+val juanito = Persona("Juanito Pérez", "00000000Z", 16)
+
+println(juanito.puedeConducir(::enFrancia))  //false
+println(juanito.puedeConducir(::enEspana))   //false
+println(juanito.puedeConducir(::enIslandia)) //true
+```
+
+¿Y si la clase `Persona` fuera de una librería que no podemos tocar? En tal caso podemos implementar `puedeConducir` como una _función de extensión_ de `Persona`:
+
+```Kotlin
+// En algún lugar de nuestro código:
+fun Persona.puedeConducir(conducir: (Int) -> Boolean): Boolean {
+    return conducir(edad)
+}
+```
+
+### Funciones como resultado
+También podemos definir el tipo de dato de salida de una función como otra función:
+  
+  ```Kotlin
+fun crearSaludo(prefijo: String): (String) -> String {
+    return { nombre -> "$prefijo $nombre" }
+}
+```
+
+La función anterior devuelve una función que toma un nombre y devuelve un saludo personalizado.
+
+El prefijo se captura en el momento de llamar a la función:
+
+```Kotlin
+val saludoFormal = crearSaludo("Estimado/a")
+
+println(saludoFormal("Ana")) // Imprime: Estimado/a Ana
+```
+
+En este caso, la variable `saludoFormal` es de tipo `(String) -> String` (una función). Es decir, admite una cadena de texto como parámetro de entrada y devuelve un texto.
+## Lambdas
+En los apartados anteriores hemos visto cómo una función puede pasarse como parámetro a otra función. De la misma forma, _una función puede asignarse a una variable_. Hasta ahora hemos usado las variables para almacenar datos de distintos tipos, pero las variables también pueden almacenar bloques de código. Por ejemplo:
+
+```Kotlin 
+var imprimirMensaje: (String) -> Unit = { nombre ->
+    println("Te damos la bienvenida, $nombre !")
+}
+
+imprimirMensaje("Pepe")    // Te damos la bienvenida, Pepe !
+```
+
+En estos casos, el tipo de dato se define como una función con esta forma:
+```Kotlin
+(Tipo_param_1, Tipo_param2, …) -> Tipo_retorno
+```
+
+La flecha `->` equivale al `return` de la función.
+En caso de que la función no vaya a devolver ningún dato, se utiliza el tipo `Unit`.
+
+>[!NOTE]
+> Recuerda que `Unit`es un tipo de dato especial con una única instancia. Se utiliza para indicar que una función no devuelve nada. En Java, el equivalente sería `void`, con la diferencia de que en Kotlin sí que devuelves algo, un objeto de tipo `Unit`. En la mayoría de contextos `Unit`está implícito y no hace falta indicarlo.
+
+Otro ejemplo donde se ve la estructura del tipo de dato función:
+
+```Kotlin
+var opAritmetica: (Int, Int) -> Int = { x, y -> x + y }
+println(opAritmetica(3, 4))
+```
+
+En este caso, la variable `opAritmetica` almacena un bloque de código (`{}`) correspondiente a una función con dos parámetros enteros de entrada (`x` e `y`) que devuelve la suma entera de ambos.
+
+Al tratarse de una función, podría usarse con la función `calcular` de ejemplos anteriores:
+
+```Kotlin
+var opAritmetica: (Int, Int) -> Int = { x, y -> x + y }
+println(calcular(3, 4, opAritmetica))
+```
+
+>[!NOTE]
+>Al tratarse de una variable, no hay que referenciarla con el operador de referencia [`::`](#operadores).
+
+De esta forma, al tratarse de una variable, puede cambiar su valor o, en este caso, su funcionalidad simplemente asignándole otra función:
+
+```Kotlin
+var opAritmetica: (Int, Int) -> Int = { x, y -> x + y }
+println(calcular(3, 4, opAritmetica)) //7
+
+opAritmetica = { x, y -> x - y }
+println(calcular(25, 7, opAritmetica)) //18
+```
+
+Si no usamos variables e introducimos directamente el código de la función en el parámetro, decimos que estamos usando una _lambda o función anónima_ (ya que no tiene nombre):
+
+```Kotlin
+println(calcular(25, 7, {x: Int, y: Int -> x + y}))
+println(calcular(25, 7, {x: Int, y: Int -> x - y}))
+```
+
+Otro ejemplo con un cuerpo algo más extenso, en este caso para calcular una pontencia:
+
+```Kotlin
+println(
+    calcular(2, 8, { base, exp ->
+            var producto = 1
+            for(i in 1..exp) producto *= base
+            producto
+        }
+    )
+)
+```
+
+En este código se puede observar:
+- *La cabecera* (`base` y `exp`, que se entiende que serán los enteros 2 y 8 respectivamente).
+- *El cuerpo de la función*, entre llaves.
+- *El valor de retorno* pero sin usar la palabra `return`, ya que va implícito en la flecha `->`. 
+
+Al implementar esta lambda, el propio editor nos sugiere que la saquemos del paréntesis. Al hacerlo quedaría así:
+
+  ```Kotlin
+println(
+    calcular(2, 8)) { base, exp ->
+        var producto = 1
+        for(i in 1..exp) producto *= base
+        producto
+    }
+)    //quitamos un paréntesis, ya que se ha cerrado arriba
+```
+
+El sacar la lambda de los paréntesis puede hacer creer que ya no se trata de un parámetro de la función calcular, pero no es así. La lambda sigue siendo un parámetro en dicha función.
+
+Esto explica cosas como la declaración de un array de enteros con todos los valores inicializados a un valor. En el siguiente ejemplo, el segundo parámetro del constructor es una lambda:
+
+```Kotlin
+val numeros = IntArray(5, {1}) // {1, 1, 1, 1, 1}
+
+//Al ser una lambda, puede sacarse de los paréntesis:
+val numeros2 = IntArray(5) {1} // {1, 1, 1, 1, 1}
+
+val numeros3 = IntArray(5) {it} // {0, 1, 2, 3, 4}
+```
+
+Es decir, `IntArray` es una función de orden superior ya que admite funciones como parámetros y cuyo parámetro de entrada (`it`) es el índice del array. También podríamos llamar a la función de la siguiente forma:
+
+```Kotlin
+val numeros3 = IntArray(5) {i -> i * 2} // {0, 2, 4, 6, 8}
+```
+
+#### Niveles de acceso
+Las variables que se declaren dentro de un bloque de código pueden ser usadas dentro del mismo (_lo que se conoce como ámbito_). Aunque las variables que declaramos dentro de una lambda no pueden salir de su ámbito, sí que se puede acceder a las variables declaradas en el ámbito donde se declara la lambda desde dentro de esta. Veámoslo con el siguiente ejemplo:
+
+```Kotlin
+fun recorrerArray(listaNumeros: IntArray, fn: (Int) -> Unit){
+    for (numero in listaNumeros)
+        fn(numero)
+}
+```
+
+Podemos llamar a esta función pasándole por parámetro la siguiente lambda:
+
+```Kotlin
+var suma = 0
+var producto = 1
+var arrayNumeros = IntArray(5){it}
+  
+recorrerArray(arrayNumeros){
+    suma += it
+    producto *= it
+}
+```
+
+Podemos renombrar el parámetro de entrada:
+```Kotlin
+recorrerArray(arrayNumeros){ numero ->
+    suma += numero
+    producto *= numero
+}
+```
+
+## Type alias
+-En construcción-
+https://kotlinlang.org/docs/type-aliases.html
+## Fechas
+Las fechas en Kotlin pueden ser tratadas con las clases **`LocalDate`y `LocalDateTime`** del paquete `java.time`.
+
+```Kotlin
+import java.time.LocalDateTime
+
+fun main() {
+    val fechaHoraActual = LocalDateTime.now()
+    println(fechaHoraActual)
+}
+//—-----------------------------------
+//~$ 2024-10-13T11:00:39.219977120
+```
+
+Estos datos son difíciles de interpretar para los humanos, por lo que podemos darles otro formato usando la clase *`DateTimeFormatter`*:
+
+```Kotlin
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+  
+fun main() {
+    val fechaHoraActual = LocalDateTime.now()
+    val formatoFecha1 = DateTimeFormatter
+                        .ofPattern("EEEE, MMMM dd, yyyy")
+    val formatoFecha2 = DateTimeFormatter
+                        .ofPattern("dd-MM-yyyy")
+    var fechaFormateada = fechaHoraActual
+                        .format(formatoFecha1)
+    println(fechaFormateada)
+    fechaFormateada = fechaHoraActual
+                    .format(formatoFecha2)
+    println(fechaFormateada)
+}
+//—-----------------------------------
+//~$ Sunday, October 13, 2024
+//~$ 13-10-2024
+```
+
+Lo mismo ocurre con las horas, con la clase `LocalTime`:
+
+```Kotlin
+import java.time.LocalTime
+
+fun main() {
+    val horaActual = LocalTime.now()
+    println(horaActual)
+}
+
+//—-----------------------------------
+//~$ 11:12:16.308689063
+```
+
+Y aplicando formatos:
+
+```Kotlin
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+
+fun main() {
+    val horaActual = LocalTime.now()
+    val formato24Horas = DateTimeFormatter
+                        .ofPattern("HH:mm:ss")
+                        
+    val formato12Horas = DateTimeFormatter
+                        .ofPattern("hh:mm a")
+                        
+    var horaFormateada = horaActual
+                        .format(formato24Horas)
+    
+    println(horaFormateada)
+    horaFormateada = horaActual.format(formato12Horas)
+    println(horaFormateada)
+}
+  
+//—-----------------------------------
+//~$ 11:16:48
+//~$ 11:16 AM
+```
+
