@@ -1,4 +1,4 @@
-# Índice
+<!--# Índice Completar
 - [Variables y constantes](#variables-y-constantes)
 - [Inferencia de tipos](#inferencia-de-tipos)
 - [Tipos de datos](#tipos-de-datos)
@@ -45,6 +45,7 @@
 	    - [while](#while)
 	    - [do-while](#do-while)
 ---
+-->
 # Variables y constantes
 
 Kotlin permite declarar variables[^1] usando las siguientes palabras reservadas: **val** (value) y **var** (variable).
@@ -156,8 +157,8 @@ var nombre = "Pepe" // String
 
 println(nombre::class.simpleName)
 
-—-----------------------------------
-~$ String
+//—-----------------------------------
+//~$ String
 ```
   
 Un String sigue siendo una secuencia de caracteres, al igual que en Java, por lo que Kotlin permite recorrerla carácter a carácter de forma sencilla:
@@ -170,11 +171,11 @@ for (caracter in nombre ) {
     println(caracter)
 
 }
-—-----------------------------------
-~$ P
-~$ e
-~$ p
-~$ e
+//—-----------------------------------
+//~$ P
+//~$ e
+//~$ p
+//~$ e
 ```
   
 Que sea inmutable significa al asignarle un valor, no se pueden cambiar. Si se reasigna otra cadena a una variable String, la cadena anterior se desreferencia y el __garbage collector__ se encargará de eliminarla. 
@@ -188,9 +189,9 @@ println(nombre.uppercase()) // el resultado no se guarda en nombre
 
 println(nombre)
 
-—-----------------------------------
-~$ PEPE
-~$ Pepe
+//—-----------------------------------
+//~$ PEPE
+//~$ Pepe
  ```
   
 Puedes concatenar cadenas usando el operador +, pero es preferible usar plantillas de cadenas o cadenas multilínea. Para hacer cadenas mutables, al igual que en Java, podemos usar la clase [StringBuilder](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/-string-builder/).
@@ -202,9 +203,9 @@ println("Buenos días, " + nombre) // 👍
 
 println("Buenos días, $nombre") // 👍👍👍👍
 
-—-----------------------------------
-~$ Buenos días, Pepe
-~$ Buenos días, Pepe
+//—-----------------------------------
+//~$ Buenos días, Pepe
+//~$ Buenos días, Pepe
  ```
   
 Cuando usamos el operador _“+”_ hablamos de  __concatenación__. Cuando usamos plantillas para _referenciar_ a una variable, hablamos de _expansión de variables_. Las plantillas, también llamadas **String Templates**, son muy útiles, ya que no solo nos permiten llamar al valor de una variable sino que también es posible usarlas para evaluar expresiones. 
@@ -219,9 +220,8 @@ val dos = 2
 
 println("La suma de $uno y $dos es ${uno + dos}")
 
-—----------------------------
-
-~$ La suma de 1 y 2 es 3
+//—----------------------------
+//~$ La suma de 1 y 2 es 3
 ```
 [Prueba este código ▶](https://pl.kotl.in/nKK9sA8gF)
 
@@ -235,9 +235,9 @@ Kotlin tiene [cadenas escapadas](https://kotlinlang.org/docs/strings.html#escape
 val saludo = "Hola, Pepe!\nCómo ha ido el día?"
 
 println(saludo)
-—-----------------------------------
-~$ Hola, Pepe!
-~$ Cómo ha ido el día?
+//—-----------------------------------
+//~$ Hola, Pepe!
+//~$ Cómo ha ido el día?
 ```
 
 - **Cadenas multilínea**: permiten escribir un texto sin necesidad de usar caracteres escapados. Para ello, dicha cadena se delimita por triples comillas dobles.
@@ -249,10 +249,9 @@ Cómo ha ido el día?""" // no necesita \n
 
 println(saludo)
 
-—-----------------------------------
-
-~$ Hola, Pepe!
-~$ Cómo ha ido el día?
+//—-----------------------------------
+//~$ Hola, Pepe!
+//~$ Cómo ha ido el día?
 ```
 
 
@@ -265,9 +264,9 @@ val saludo = """
 			 """.trimIndent()            //Ignora espacios 
 
 println(saludo)
-—-----------------------------------
-~$ Hola, Pepe!
-~$ Cómo ha ido el día?
+//—-----------------------------------
+//~$ Hola, Pepe!
+//~$ Cómo ha ido el día?
 ```
 
 
@@ -430,22 +429,30 @@ En Kotlin, puedes usar diferentes tipos de constantes literales para números in
 
 ----
 #### Constantes literales para valores integrales
+
 - **Decimales**: Se escriben directamente como números.  
-  ```kotlin
-  val decimalValue = 123
-  ```  
+  
+```kotlin
+val decimalValue = 123
+```  
+  
 - **Long**: Se identifican con una `L` al final del número.  
-  ```kotlin
-  val longValue = 123L
-  ```  
-- **Hexadecimales**: Se prefijan con `0x` o `0X`.  
-  ```kotlin
-  val hexValue = 0x0F
-  ```  
-- **Binarios**: Se prefijan con `0b` o `0B`.  
-  ```kotlin
-  val binaryValue = 0b00001011
-  ```  
+  
+```kotlin
+val longValue = 123L
+```  
+  
+- **Hexadecimales**: Se prefijan con `0x` o `0X`.
+
+```kotlin
+val hexValue = 0x0F
+```  
+
+- **Binarios**: Se prefijan con `0b` o `0B`. 
+   
+```kotlin
+val binaryValue = 0b00001011
+```  
 
 > [!WARNING]
 > **Octales**:
@@ -453,15 +460,18 @@ En Kotlin, puedes usar diferentes tipos de constantes literales para números in
 
 ---
 #### Constantes literales para valores de punto flotante
-- **Double**: Es el tipo predeterminado para valores con parte decimal o en notación científica.  
-  ```kotlin
-  val doubleValue = 123.5
-  val scientificDouble = 123.5e10
-  ```  
+- **Double**: Es el tipo predeterminado para valores con parte decimal o en notación científica. 
+   
+```kotlin
+val doubleValue = 123.5
+val scientificDouble = 123.5e10
+```  
+  
 - **Float**: Se identifican con un sufijo `f` o `F`.  
-  ```kotlin
-  val floatValue = 123.5f
-  ```  
+  
+```kotlin
+val floatValue = 123.5f
+```  
 
 ---
 #### Uso de guiones bajos para mejorar la legibilidad
@@ -499,7 +509,6 @@ val x = (1 shl 2) and 0x000FF000
 [^8]: Numbers - Kotlin Programming Language. (s. f.). Kotlin. https://kotlinlang.org/docs/numbers.html
 
 ---
-
 ## Lógicos
 
 Un objeto booleano[^9] puede representar dos valores _`true`_ y _`false`_. Recuerda que a diferencia de Java, _`Boolean`_ no puede ser nulo. Su contraparte *nullable* es _`Boolean`_.
@@ -599,10 +608,9 @@ println(arrayNotasExamen::class.simpleName)
 
 println(arrayNotasExamen.joinToString())
 
-—-----------------------------------
-
-~$ Array
-~$ 1..6
+//—-----------------------------------
+//~$ Array
+//~$ 1..6
 
 ```
 
@@ -617,9 +625,8 @@ val arrayNotasExamen = Array<Int>(6){10}
 
 println(arrayNotasExamen.joinToString())
 
-—-----------------------------------
-
-~$ 10, 10, 10, 10, 10, 10  
+//—-----------------------------------
+//~$ 10, 10, 10, 10, 10, 10  
 ```
 
 También podemos hacerlo indicando el tamaño inicial (entre paréntesis) y una función que genera cada elemento del array indicando su índice
@@ -633,12 +640,11 @@ val arrayTextos = Array(10, { i -> (i + 10).toString() })
 
 println(arrayTextos.joinToString())
 
-—-----------------------------------
-
-~$ Array
-~$ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
-~$ Array
-~$ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+//—-----------------------------------
+//~$ Array
+//~$ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+//~$ Array
+//~$ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
 ```
 [Prueba este código ▶](https://pl.kotl.in/KPxkKs-50)
 
@@ -657,6 +663,7 @@ Estas clases son: [ByteArray](https://kotlinlang.org/api/core/kotlin-stdlib/kotl
 #### Acceso y modificación
 
 Leer o modificar los elementos de un array se hace de forma similar a Java.
+
   ```Kotlin
 val arrayNumeros = Array(10, { i -> i + 10 })
 
@@ -668,11 +675,10 @@ arrayNumeros[5] = 0
 
 println(arrayNumeros.joinToString())
 
-—-----------------------------------
-~$ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
-~$ 15
-~$ 10, 11, 12, 13, 14, 0, 16, 17, 18, 19
-
+//—-----------------------------------
+//~$ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
+//~$ 15
+//~$ 10, 11, 12, 13, 14, 0, 16, 17, 18, 19
 ```
 
 Aunque lo veremos en los [rangos](https://docs.google.com/document/d/1NBdPPQc5gSjRZnafi34eAk254KPwL30mNZIiQkW4XKM/edit?tab=t.0#heading=h.dulvthaoy0bf), se puede usar el operador in para comprobar si un elemento está incluido en un array:
@@ -682,8 +688,8 @@ var arrayCorto = arrayOf(1, 24, 3)
 
 println(24 in arrayCorto)
 
-—-----------------------------------
-~$ true
+//—-----------------------------------
+//~$ true
 ```
 
 Podemos recorrer un array de distintas formas:
@@ -761,13 +767,12 @@ fun crearMatriz(filas: Int, columnas: Int, valorInicial: String) = Array(filas) 
     Array(columnas) { valorInicial } 
 }
 
-—---------
-
 //Al imprimir la matriz se habrá modificado el valor
 
-~$ ***
-~$ *-*
-~$ ***
+//—---------
+//~$ ***
+//~$ *-*
+//~$ ***
  ```
 [Prueba este código ▶](https://pl.kotl.in/_bSOztIaH?theme=darcula)
 
@@ -951,6 +956,7 @@ Para poder tener operaciones de escritura, se debe usar o la interfaz **`Mutable
 val numeros = listOf("uno", "dos", "tres", "cuatro")
 println(numeros[2]) // Imprime "tres"
 ```
+
 Propiedades:
 - `size`: Devuelve el número de elementos en la lista.
 
@@ -1031,6 +1037,7 @@ val mapaNumeros = mapOf("clave1" to 1, "clave2" to 2)
 println(mapaNumeros.keys) // Imprime las claves
 println(mapaNumeros.values) // Imprime los valores
 ```
+
 Propiedades:
 - `size`: Devuelve el número de pares clave-valor en el mapa.
 - `keys`: Devuelve un conjunto de las claves usadas en el mapa.
