@@ -1263,7 +1263,6 @@ En [este enlace](https://pl.kotl.in/Qx7AOj6I0) puedes probar código de ejemplo 
 
 Hasta ahora todos los rangos que hemos visto son inclusivos, es decir, incluyen el primer y el último valor del rango. Para hacer rangos excluyentes (que no incluyan alguno de los límites) podemos hacerlo de varias formas:
 
-
 ```Kotlin
 val rangoExclusivo = 1 until 6 
 println("Primera forma")
