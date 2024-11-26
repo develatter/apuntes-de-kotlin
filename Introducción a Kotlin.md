@@ -2409,10 +2409,90 @@ Para más información consulta los siguientes artículos:
 - [https://kotlinlang.org/docs/data-classes.html](https://kotlinlang.org/docs/data-classes.html
 - [https://www.develou.com/data-classes-en-kotlin/](https://www.develou.com/data-classes-en-kotlin/)
 ## Enum  
--En construcción-
+Los `enum`[^22] en Kotlin proporcionan una forma de crear conjuntos de constantes de tipo seguro, ofreciendo una implementación robusta y flexible de enumeraciones.
 
-- [https://kotlinlang.org/docs/enum-classes.html](https://kotlinlang.org/docs/enum-classes.html)
-- [https://www.develou.com/clases-enum-en-kotlin/](https://www.develou.com/clases-enum-en-kotlin/)
+El caso de uso más básico para un `enum` es representar un conjunto de tipos seguros.
+
+```kotlin
+enum class Direction {
+    NORTH, SOUTH, WEST, EAST
+}
+```
+
+Cada constante dentro de un `enum` es un objeto. Como a su vez los `enum`son instancias de la clase `Enum`, pueden ser inicializados con un constructor.
+
+```kotlin
+enum class Color(val rgb: Int) {
+    RED(0xFF0000),
+    GREEN(0x00FF00),
+    BLUE(0x0000FF)
+}
+```
+
+Dentro de cada constante de un `enum` es posible declarar clases anónimas con sus propios métodos, e incluso sobreescribir métodos ya existentes.
+
+```kotlin
+enum class ProtocolState {
+    WAITING {
+        override fun signal() = TALKING
+    },
+    TALKING {
+        override fun signal() = WAITING
+    };
+
+    abstract fun signal(): ProtocolState
+}
+```
+
+>[!NOTE]
+>Observa que la declaración de las constantes se separa del resto de código del `enum`, como las funciones del mismo, mediante un **punto y coma** `;`.
+
+Los enums no pueden extender de otras clases, pero sí implementar interfaces, bien mediante una implementación genérica para todas las constantes del enum o mediante una implementación específica para cada constante mediante clases anónimas.
+
+```kotlin
+enum class IntArithmetics : BinaryOperator<Int>, IntBinaryOperator {
+    PLUS {
+        override fun apply(t: Int, u: Int): Int = t + u
+    },
+    TIMES {
+        override fun apply(t: Int, u: Int): Int = t * u
+    };
+
+    override fun applyAsInt(t: Int, u: Int) = apply(t, u)
+}
+```
+
+>[!TIP]
+>Las clases `enum` en Kotlin implementan por defecto la interfaz `Comparable`.
+
+### Métodos y Propiedades Sintéticos
+Las clases enum tienen una serie de métodos y propiedades sintéticos que se generan automáticamente y sirven para listar las constantes del enum, obtener un enum por su nombre, o acceder a sus propiedades.
+
+```kotlin
+enum class RGB { RED, GREEN, BLUE }
+
+fun main() {
+    // Iterar sobre todas las entradas
+    for (color in RGB.entries) {
+        println(color.toString())
+    }
+
+    // Obtener un enum por su nombre
+    println(RGB.valueOf("RED"))
+}
+```
+
+Desde **Kotlin 1.9.0** se accede a las entradas de un enum con la propiedad `entries`. También podemos obtener el nombre de una constante con la propiedad `name` y su posición de declaración con la propiedad `ordinal`.
+
+```kotlin
+println(RGB.entries)     // Imprime [RED, GREEN, BLUE]
+println(RGB.RED.name)    // Imprime "RED"
+println(RGB.RED.ordinal) // Imprime 0
+```
+
+Con la función `enumEntries<T>()` podemos obtener las constantes de un enum de un tipo específico `T`.
+
+[^22]:_Enum classes | Kotlin_. (s. f.). Kotlin Help. [https://kotlinlang.org/docs/enum-classes.html](https://kotlinlang.org/docs/enum-classes.html)
 # Conceptos avanzados
 
 Kotlin ofrece algunas opciones para mejorar y fortalecer nuestro código. Veamos algunas.
@@ -2786,8 +2866,67 @@ recorrerArray(arrayNumeros){ numero ->
 ```
 
 ## Type alias
--En construcción-
-https://kotlinlang.org/docs/type-aliases.html
+Los type aliases (alias de tipos) en Kotlin permiten crear nombres alternativos para tipos existentes, lo que puede simplificar el código y hacerlo más legible. [^21]
+
+Podemos usarlos por ejemplo para simplificar declaraciones de tipos genéricos largas.
+```kotlin
+// Alias para un conjunto de nodos de red
+typealias NodeSet = Set<Network.Node>
+
+// Alias para un mapa de archivos
+typealias FileTable<K> = MutableMap<K, MutableList<File>>
+```
+
+Otro caso de uso sería el de dar nombres más simples a los tipos de función.
+
+```kotlin
+// Alias para un manejador de eventos
+typealias MyHandler = (Int, String, Any) -> Unit
+
+// Alias para un predicado genérico
+typealias Predicate<T> = (T) -> Boolean
+```
+
+También se pueden usar para hacer referencia a clases anidadas (`nested`e `inner`).
+
+```kotlin
+class A {
+    inner class Inner
+}
+class B {
+    inner class Inner
+}
+
+// Creando alias para clases internas
+typealias AInner = A.Inner
+typealias BInner = B.Inner
+```
+
+>[!TIP]
+>- Los type aliases no crean tipos completamente nuevos
+>- Son equivalentes a sus tipos subyacentes
+>- El compilador de Kotlin los expande automáticamente
+
+
+```kotlin
+// Definición del type alias
+typealias Predicate<T> = (T) -> Boolean
+
+// Función que usa el type alias
+fun foo(p: Predicate<Int>) = p(42)
+
+fun main() {
+    // Uso directo de función lambda
+    val f: (Int) -> Boolean = { it > 0 }
+    println(foo(f)) // Imprime "true"
+
+    // Usando el type alias
+    val p: Predicate<Int> = { it > 0 }
+    println(listOf(1, -2).filter(p)) // Imprime "[1]"
+}
+```
+
+[^21]:_Type aliases | Kotlin_. (s. f.). Kotlin Help. [https://kotlinlang.org/docs/type-aliases.html](https://kotlinlang.org/docs/type-aliases.html)
 ## Fechas
 Las fechas en Kotlin pueden ser tratadas con las clases **`LocalDate`y `LocalDateTime`** del paquete `java.time`.
 
@@ -2866,4 +3005,3 @@ fun main() {
 //~$ 11:16:48
 //~$ 11:16 AM
 ```
-
