@@ -235,6 +235,7 @@ Kotlin tiene [cadenas escapadas](https://kotlinlang.org/docs/strings.html#escape
 val saludo = "Hola, Pepe!\nCómo ha ido el día?"
 
 println(saludo)
+
 //—-----------------------------------
 //~$ Hola, Pepe!
 //~$ Cómo ha ido el día?
@@ -264,6 +265,7 @@ val saludo = """
 			 """.trimIndent()            //Ignora espacios 
 
 println(saludo)
+
 //—-----------------------------------
 //~$ Hola, Pepe!
 //~$ Cómo ha ido el día?
@@ -748,7 +750,6 @@ var matrizForma2 = arrayOf(Array<Int>(3) {0},
 ##### Mediante el constructor `Array()`
 Podemos utilizar _`Array()`_ de forma genérica para facilitar la construcción de matrices. Si creamos una función auxiliar facilitaremos bastante la creación de matrices de distintos tipos.
 
-
 ```Kotlin
 fun main() {
     val matrizStrings = crearMatriz(3, 3, "*")
@@ -842,8 +843,8 @@ println(
 	)
 )
 // true
-// diferente tamaño
 
+// diferente tamaño
 println(
 	arrayFruta.contentEquals(
 		arrayOf("apple","orange")
@@ -874,7 +875,6 @@ println(
 		segundaArray
 	)
 ) 
-
 // false
 
 segundaArray[1][1] = 1
@@ -1133,8 +1133,8 @@ nombre = null
 println(nombre)
 
 //—-----------------------------------
-~$ Pepe
-~$ null
+//~$ Pepe
+//~$ null
 ```
 ## Operador seguro (?.)
 
@@ -1147,7 +1147,7 @@ val longitud: Int? = cadena?.length
 println(longitud)
 
 //—-----------------------------------
-~$ null
+//~$ null
 ```
 
 ## Operador Elvis (?:)
@@ -1166,8 +1166,7 @@ val nombreCompleto: String = nombre
 println(nombreCompleto)
 
 //—-----------------------------------
-
-~$ Pepe Expósito Fernández
+//~$ Pepe Expósito Fernández
  ```
   
 Otros ejemplos del uso del operador Elvis: [ejemplo 1](https://pl.kotl.in/52M0snJsu), [ejemplo 2](https://pl.kotl.in/ZjiCPjZi1).
@@ -1289,6 +1288,7 @@ val start = 0
 val end = 10
 val rangoExclusivo = (start + 1)..< end
 rangoExclusivo.forEach{i -> print(i)}
+
 //---------—---------
 //~$ 123456789
 ```
@@ -1379,7 +1379,6 @@ En la opción 3 del ejemplo anterior, donde el if se usa como una expresión (es
 El switch que se usa en Java para ejecutar un bloque de código de entre varios según el valor de un dato se conoce como [when](https://kotlinlang.org/docs/control-flow.html#when-expression) en Kotlin.[^14]
 
 Esta sentencia permite mostrar de forma más sencilla la evaluación de varias condiciones, en lugar de usar una cascada de sentencias `if - else if - else`:
-
 
 ```Kotlin
 val posicion = 3
@@ -2912,7 +2911,6 @@ typealias BInner = B.Inner
 >- Los type aliases no crean tipos completamente nuevos
 >- Son equivalentes a sus tipos subyacentes
 >- El compilador de Kotlin los expande automáticamente
-
 
 ```kotlin
 // Definición del type alias
