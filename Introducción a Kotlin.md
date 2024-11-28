@@ -2413,7 +2413,64 @@ Este tipo de clases se suelen usar para crear modelos de almacenamiento sin tene
 Para más información consulta los siguientes artículos:
 - [https://kotlinlang.org/docs/data-classes.html](https://kotlinlang.org/docs/data-classes.html
 - [https://www.develou.com/data-classes-en-kotlin/](https://www.develou.com/data-classes-en-kotlin/)
-## Enum  
+
+
+## Inner classes y  nested classes
+En Kotlin, las clases anidadas (nested classes) son una característica que permite definir una clase dentro de otra, facilitando la organización del código y permitiendo crear estructuras más modulares y encapsuladas. 
+
+Las clases anidadas en Kotlin se dividen en dos tipos principales:
+1. **Clases Anidadas (Nested Classes)**
+2. **Clases Internas (Inner Classes)**
+### Nested Classes
+Las nested classes se definen simplemente usando la palabra clave `class` dentro de otra clase, sin el modificador `inner`.
+#### Características Principales:
+- No tienen acceso a los miembros de la instancia de la clase externa.
+- Se comportan como una clase independiente.
+- Se pueden instanciar sin crear una instancia de la clase externa.
+
+Ejemplo de una nested class:
+
+```kotlin
+class Contenedor {
+    class ClaseAnidada {
+        fun mostrarMensaje() {
+            println("Soy una clase anidada")
+        }
+    }
+}
+
+fun main() {
+    val anidada = Contenedor.ClaseAnidada() //Constructor anidado
+    anidada.mostrarMensaje()
+}
+```
+
+### Inner Classes (Clases Internas)
+Las inner classes son clases anidadas que tienen una relación más estrecha con la clase externa. Se definen usando el modificador `inner`.
+#### Características Principales:
+- Pueden acceder a los miembros privados de la clase externa.
+- Mantienen una referencia a la instancia de la clase externa.
+- Se pueden instanciar solo a través de una instancia de la clase externa.
+
+Ejemplo de una inner class:
+```kotlin
+class Contenedor(private val valorExterno: Int) {
+    inner class ClaseInterna {
+        fun mostrarValor() {
+            // Acceso directo al miembro de la clase externa
+            println("Valor externo: $valorExterno")
+        }
+    }
+}
+
+fun main() {
+    val contenedor = Contenedor(42)
+    val interna = contenedor.ClaseInterna() //A través de instancia.
+    interna.mostrarValor()
+}
+```
+
+## Enum 
 Los `enum`[^22] en Kotlin proporcionan una forma de crear conjuntos de constantes de tipo seguro, ofreciendo una implementación robusta y flexible de enumeraciones.
 
 El caso de uso más básico para un `enum` es representar un conjunto de tipos seguros.
